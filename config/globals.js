@@ -1,3 +1,4 @@
+'use strict';
 module.exports.globals = {
 	_: true,
 	async: true,

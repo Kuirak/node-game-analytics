@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Configure advanced options for the Express server inside of Sails.
  *
@@ -62,7 +63,7 @@ module.exports.express = {
 	// 
 	// If you understand the risks of using the multipart bodyParser,
 	// and would like to disable the warning log messages, uncomment:
-	// silenceMultipartWarning: true,
+	silenceMultipartWarning: true,
 	// ======================================================================
 
 

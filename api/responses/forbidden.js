@@ -1,3 +1,4 @@
+'use strict';
 /**
  * 403 (Forbidden) Handler
  *
