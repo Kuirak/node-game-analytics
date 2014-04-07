@@ -1,0 +1,28 @@
+{
+  "name": "node-game-analytics",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Kuirak/node-game-analytics",
+  "authors": [
+    "Jonas Kugelmann"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.16",
+    "angular-bootstrap": "~0.10.0",
+    "angular-sails": "~1.0.3",
+    "angular-moment": "~0.6.2",
+    "angular-ui-bootstrap-bower": "~0.10.0",
+    "angular-ui-router": "~0.2.10",
+    "angular-ui-utils": "~0.1.1",
+    "angular-lodash": "~0.1.0",
+    "lodash": "~2.4.1"
+  }
+}

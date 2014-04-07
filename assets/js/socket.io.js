@@ -3324,7 +3324,7 @@ var io = {};
   , this
 );
 
-if (typeof define === "function" && define.amd) {
-  define([], function () { return io; });
-}
+//if (typeof define === "function" && define.amd) {
+//  define([], function () { return io; });
+//}
 })();

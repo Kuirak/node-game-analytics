@@ -32,15 +32,15 @@ var jsFilesToInject = [
   // then beef it up with some convenience logic for talking to Sails.js
   'js/sails.io.js',
 
-  // finally, include a simple boilerplate script that connects a socket
-  // to the Sails backend with some example code
-  'js/connection.example.js',
 
-  //
-  // *->    you might put other dependencies like jQuery or Angular here   <-*
+  'js/components/angular.js',
+  'js/components/lodash.js',
+  'js/components/moment.js',
+
   //
 
   // All of the rest of your app scripts
+
   'js/**/*.js'
 ];
 
