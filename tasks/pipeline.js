@@ -25,23 +25,20 @@ var jsFilesToInject = [
 
   // Below, as a demonstration, you'll see the built-in dependencies
   // linked in the proper order order
-
+  'js/components/lodash.js',
+  'js/components/angular.js',
   // Bring in the socket.io client
   'js/socket.io.js',
-
   // then beef it up with some convenience logic for talking to Sails.js
   'js/sails.io.js',
 
-
-  'js/components/angular.js',
-  'js/components/lodash.js',
   'js/components/moment.js',
-
   //
-
+  'js/components/**/*.js',
   // All of the rest of your app scripts
+  'js/**/*.js',
+  'js/app/**/*.js'
 
-  'js/**/*.js'
 ];
 
 

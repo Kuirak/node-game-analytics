@@ -1,4 +1,4 @@
-'use strict';
+
 /*! Socket.IO.js build:0.9.16, development. Copyright(c) 2011 LearnBoost <dev@learnboost.com> MIT Licensed */
 /* Modified to be client-side-only by Balderdash so that it can be included safely in an HTML body         */
 /* (see https://github.com/balderdashy/sails/issues/1283) */
@@ -3324,7 +3324,7 @@ var io = {};
   , this
 );
 
-//if (typeof define === "function" && define.amd) {
-//  define([], function () { return io; });
-//}
+if (typeof define === "function" && define.amd) {
+  define([], function () { return io; });
+}
 })();

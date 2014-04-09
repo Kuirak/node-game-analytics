@@ -1,5 +1,18 @@
-<div ng-app="RTA">
-    <div class="container">
-    	<h3>Hello</h3>
-    </div>
+<div ng-app="RTA" >
+    <nav class="navbar navbar-inverse">
+    	<a class="navbar-brand" ui-sref="home">RTA</a>
+    	<ul class="nav navbar-nav">
+    		<li ui-sref-active="active">
+    			<a ui-sref="home">Home</a>
+    		</li>
+    		<li ui-sref-active="active">
+    			<a ui-sref="dashboard">Dashboard</a>
+    		</li>
+    		<li ui-sref-active="active">
+    			<a ui-sref="editor">Editor</a>
+    		</li>
+    	</ul>
+    </nav>
+    <div ui-view ></div>
+
 </div>

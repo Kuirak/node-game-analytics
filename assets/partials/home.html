@@ -1,0 +1,15 @@
+<div class="container" ng-controller="MainController">
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong>Error</strong> {{error}}
+    </div>
+    <h3>Hello</h3>
+    <p>Count: {{events.length}}</p>
+    <div ng-repeat="event in events">
+        <p>{{event.type}}
+            <a href="" ng-click="deleteEvent(event.id)" >
+                <span class="glyphicon glyphicon-trash"></span>
+            </a>
+        </p>
+    </div>
+</div>

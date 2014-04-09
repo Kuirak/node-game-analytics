@@ -27,9 +27,14 @@ module.exports.routes = {
   // default view engine) your home page.
   // 
   // (Alternatively, remove this and add an `index.html` file in your `assets` directory)
-  '/': {
-    view: 'home/index'
+  '/*': {
+    view: 'home/index',
+    skipAssets: true,
+    skipRegex:[/\/api.*/]
   },
+//  '/dashboard':{
+//        view:'home/index'
+//  }
 
 
   // Custom routes here...
