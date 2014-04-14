@@ -2,7 +2,7 @@
 /**
  * Created by Drako on 07.04.2014.
  */
-var app = angular.module('RTA',['ngSails','ui.router']);
+var app = angular.module('RTA',['ngSails','ui.router','d3']);
 
 app.config(function($stateProvider,$locationProvider){
     $locationProvider.html5Mode(true);

@@ -1,0 +1,16 @@
+.circle {
+    border-radius: 50%;
+}
+.node-circle{
+    width: 2em;
+    height: 2em;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0.1em;
+}
+.node-output{
+    background-color: slategray;
+}
+.node-input{
+    background-color: rosybrown;
+}
