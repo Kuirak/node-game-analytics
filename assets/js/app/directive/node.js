@@ -8,7 +8,7 @@ app.directive("node",function(){
         restrict:"E",
         transclude:true,
         templateUrl:"/partials/editor.node.html",
-        link: function(scope){
+        link: function(scope,el,attr){
 
         }
     }

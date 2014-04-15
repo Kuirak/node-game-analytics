@@ -2,10 +2,9 @@
 /**
  * Created by Drako on 14.04.2014.
  */
-app.directive('connector',['$document','d3',function($document,d3){
+app.directive('connector',['$document',function($document){
     return {link:function(scope,element,attr){
         var startX = 0,startY = 0,x= 0,y=0;
-
         element.css({
             position:'relative',
             cursor:'crosshair'
@@ -23,6 +22,9 @@ app.directive('connector',['$document','d3',function($document,d3){
         function mousemove(event){
             x= event.pageX -startX;
             y= event.pageY -startY;
+            //TODO add connection
+
+
         }
         function mouseup(){
             $document.unbind('mousemove',mousemove);
