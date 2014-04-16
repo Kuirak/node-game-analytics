@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Created by Drako on 11.04.2014.
+ * Created by Jonas Kugelmann on 11.04.2014.
  */
 
 app.directive("node",function(){

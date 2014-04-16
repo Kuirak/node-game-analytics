@@ -1,10 +1,17 @@
 'use strict';
 /**
- * Created by Drako on 11.04.2014.
+ * Created by Jonas Kugelmann on 11.04.2014.
  */
-app.directive('draggable',['$document',function($document){
+app.directive('nodeDraggable',['$document',function($document){
     return {link:function(scope,element,attr){
-        var startX = 0,startY = 0,x= scope.node.visual.x,y=scope.node.visual.y;
+        if(attr.uiDraggable){
+            element.css({cursor:'crosshair'});
+            element.on("mousedown",function(e){
+                e.stopPropagation();
+            });
+            return;
+        }
+        var startX = 0,startY = 0,x= scope.node.x,y=scope.node.y;
         element.css({
             position:'relative',
             cursor:'move',
