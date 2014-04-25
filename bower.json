@@ -17,13 +17,13 @@
   "dependencies": {
     "angular": "~1.2.16",
     "angular-bootstrap": "~0.10.0",
-    "angular-sails": "~1.0.3",
     "angular-moment": "~0.6.2",
     "angular-ui-bootstrap-bower": "~0.10.0",
     "angular-ui-router": "~0.2.10",
     "angular-ui-utils": "~0.1.1",
     "lodash": "~2.4.1",
     "d3": "~3.4.5",
-    "angular-dragdrop-ganarajpr": "~1.0.1"
+    "angular-dragdrop-ganarajpr": "~1.0.1",
+    "angularSails": "https://github.com/balderdashy/angularSails.git"
   }
 }

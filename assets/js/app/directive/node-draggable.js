@@ -4,6 +4,7 @@
  */
 app.directive('nodeDraggable',['$document',function($document){
     return {link:function(scope,element,attr){
+        // to prevent  dragging  drag n drop items ad node-draggable directive and it negates the effect
         if(attr.uiDraggable){
             element.css({cursor:'crosshair'});
             element.on("mousedown",function(e){

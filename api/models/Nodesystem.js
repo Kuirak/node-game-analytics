@@ -8,7 +8,9 @@
 module.exports = {
 
 	attributes: {
-        nodes:'json'
+        nodes:'array',
+        connections:'array',
+        game:{model:'game'}
 
 	}
 

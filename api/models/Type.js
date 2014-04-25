@@ -9,7 +9,8 @@ module.exports = {
 
 	attributes: {
         name:{type:'string',required:true,unique:true},
-        params:'json'
+        params:'json',
+        game:{model:'game'}
 	}
 
 };

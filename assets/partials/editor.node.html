@@ -1,20 +1,27 @@
 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 <div class="panel panel-default">
 	  <div class="panel-heading">
-			<h3 class="panel-title">ID {{node.node_id}} - {{node.title}}</h3>
+			<h3 class="panel-title">ID {{node.id}} - {{node.title}}</h3>
 	  </div>
 	  <div class="panel-body" >
           <div ng-transclude></div>
             <div>
               <div  ng-repeat="input in node.inputs" >
-                  <div class="circle node-circle node-input" ui-on-drop="connect($event,$data)" drop-channel="{{input.type}}" ></div>  <span>{{input.title}}</span>
+                  <div class="circle node-circle node-input" ui-on-drop="connect($event,$data,{input:{{input}},node:{{node}}})" drop-channel="{{input.type}}" ></div>
+                  <span>{{input.title}}</span>
               </div>
             </div>
             <div>
               <div  ng-repeat="output in node.outputs" >
-                  <span>{{output.title}}</span> <div  class="circle node-circle node-output" node-draggable ui-draggable="true" drag="{output_id:{{output.output_id}},node_id:{{node.node_id}}}" drag-channel="{{output.type}}" ></div>
+                  <span>{{output.title}}</span> <div  class="circle node-circle node-output"
+                                                      node-draggable
+                                                      ui-draggable="true"
+                                                      drag="{output: {{output}},node:{{node}}}"
+                                                      drag-channel="{{output.type}}" ></div>
               </div>
+
             </div>
+
 	  </div>
 </div>
 </div>

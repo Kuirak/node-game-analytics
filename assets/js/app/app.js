@@ -2,7 +2,7 @@
 /**
  * Created by Drako on 07.04.2014.
  */
-var app = angular.module('RTA',['ngSails','ui.router','d3','ngDragDrop']);
+var app = angular.module('RTA',['sails.io','ui.router','d3','ngDragDrop']);
 
 app.config(function($stateProvider,$locationProvider){
     $locationProvider.html5Mode(true);
@@ -16,6 +16,9 @@ app.config(function($stateProvider,$locationProvider){
     }).state('editor',{
         url:'/editor',
         templateUrl:'/partials/editor.html'
+    }).state('events',{
+        url:'/events',
+        templateUrl:'/partials/events.html'
     })
 });
 

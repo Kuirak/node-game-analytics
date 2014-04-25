@@ -1,10 +1,10 @@
 'use strict';
-app.controller("MainController", function ($scope,$sails ) {
+app.controller("MainController", function ($scope,$sailsSocket ) {
 
     $scope.message ="Just a test message";
     $scope.events =[];
     $scope.deleteEvent = function (id) {
-        $sails.delete('/api/event/'+id).success(function(data){
+        $sailsSocket.delete('/api/event/'+id).success(function(data){
             _.remove($scope.events,function(event){
                 return event.id ===id;
             })
@@ -14,19 +14,21 @@ app.controller("MainController", function ($scope,$sails ) {
     };
     (function(){
 
-        $sails.get('/api/event').success(function(data){
+        $sailsSocket.subscribe('event',function(message){
+            if(message.verb ==='created'){
+                $scope.events.push(message.data);
+            }
+        });
+        $sailsSocket.get('/api/event/subscribe').success(function(data){
+            console.log("Subscribed")
+        });
+        $sailsSocket.get('/api/event').success(function(data){
             $scope.events =data;
         }).error(function(err){
             $scope.error =err;
         });
-        $sails.get('/api/event/subscribe').success(function(data){
 
-        });
-        $sails.on('event',function(message){
-            if(message.verb ==='created'){
-                $scope.events.push(message.data);
-            }
-        })
+
     }());
 
 });

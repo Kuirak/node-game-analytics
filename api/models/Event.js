@@ -10,7 +10,8 @@ module.exports = {
 	attributes: {
         type:{type:'string',required:true},
         timestamp:'integer',
-        params: 'json'
+        params: 'json',
+        game:{model:'game'}
 	},
     beforeCreate:function(values,done){
         "use strict";
