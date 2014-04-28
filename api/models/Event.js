@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Event.js
  *
@@ -14,7 +15,7 @@ module.exports = {
         game:{model:'game'}
 	},
     beforeCreate:function(values,done){
-        "use strict";
+        //TODO move to policy
          Type.findOne({name:values.type}).then(function(type){
              if(!type.params){
                  done();
@@ -23,9 +24,9 @@ module.exports = {
                  done(new Error("Event params missing "+ value.type));
                  return;
              }
-           if(_.difference(_.keys(type.params), _.keys(values.params)).length >0){
+           if(_.difference(_.map(type.params,function(param){return param.title;}), _.keys(values.params)).length >0){
                //TODO validate types
-               done(new Error("Event type params not matching: " +values.type ));
+               done(new Error("Event type params not matching: " + values.type +" | " + type.params));
            }else{
                done();
            }

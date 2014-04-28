@@ -15,10 +15,22 @@ app.config(function($stateProvider,$locationProvider){
         templateUrl:'/partials/dashboard.html'
     }).state('editor',{
         url:'/editor',
-        templateUrl:'/partials/editor.html'
-    }).state('events',{
-        url:'/events',
-        templateUrl:'/partials/events.html'
+        templateUrl:'/partials/editor.html',
+        controller:'EditorController'
+    }).state('types',{
+        url:'/types',
+        templateUrl:'/partials/types.html',
+        controller:'TypeController',
+        resolve:{
+            types:function($sailsSocket){
+                return $sailsSocket.get('/api/type');
+            }
+        }
+    }).state('types.params',{
+            url:'/:type',
+            templateUrl:'/partials/types.params.html',
+            controller:'TypeController'
+
     })
 });
 
