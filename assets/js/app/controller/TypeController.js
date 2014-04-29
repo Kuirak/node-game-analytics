@@ -3,7 +3,6 @@
  * Created by Jonas Kugelmann on 25.04.2014.
  */
 app.controller('TypeController',function($scope, $sailsSocket,$http, $stateParams,types){
-    console.log(types);
     $scope.types=types.data;
     $scope.selectedType = _.find($scope.types,{name:$stateParams.type});
     $scope.paramTypes=['number','vector3','string'];

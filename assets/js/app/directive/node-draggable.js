@@ -39,6 +39,9 @@ app.directive('nodeDraggable',['$document',function($document){
         function mouseup(){
             $document.unbind('mousemove',mousemove);
             $document.unbind('mouseup',mouseup);
+            console.log(scope);
+            scope.node.x=x;
+            scope.node.y=y;
         }
     }}
 }]);

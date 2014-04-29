@@ -1,24 +1,14 @@
 <div class="container">
-    <div class="pull-right"><a class="btn btn-lg btn-danger" ng-click="save()">Save</a></div>
-    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Connections</h3>
-            </div>
-            <div class="panel-body">
-                <div ng-repeat="connection in connections">
-                    <p>ID {{connection.source.node.id}} {{connection.source.output.title}} <span class="glyphicon glyphicon-chevron-right"></span> ID
-                        {{connection.target.node.id}} {{connection.target.input.title}}
-                    <a ng-click="unconnect(connection)" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-trash"></span></a>
-                    </p>
-                </div>
-            </div>
-        </div>
+    <div class="row">
+       <li class="dropdown list-unstyled">
+           <a class="dropdown-toggle btn-sm btn-success">Choose A Node System</a>
+           <ul class="dropdown-menu">
+               <li ng-repeat="ns in nodeSystems">
+                   <a ui-sref="editor.nodesystem({id:ns.id})">{{ns.name}}</a>
+               </li>
+           </ul>
+       </li>
     </div>
-    <div ng-repeat="node in nodes" node-draggable>
-        <node>
-            <p>Transclude: {{node.title}}</p>
-        </node>
+    <div class="row" ui-view>
     </div>
-
 </div>

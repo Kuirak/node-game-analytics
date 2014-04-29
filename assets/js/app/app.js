@@ -2,7 +2,7 @@
 /**
  * Created by Drako on 07.04.2014.
  */
-var app = angular.module('RTA',['sails.io','ui.router','d3','ngDragDrop']);
+var app = angular.module('RTA',['sails.io','ui.router','d3','ngDragDrop','ui.bootstrap']);
 
 app.config(function($stateProvider,$locationProvider){
     $locationProvider.html5Mode(true);
@@ -16,7 +16,29 @@ app.config(function($stateProvider,$locationProvider){
     }).state('editor',{
         url:'/editor',
         templateUrl:'/partials/editor.html',
-        controller:'EditorController'
+        resolve:{
+            nodeSystems: function($sailsSocket){
+                return $sailsSocket.get('/api/nodesystem/');
+            }
+        },
+        controller: function($scope,$state,nodeSystems){
+            $scope.nodeSystems =nodeSystems.data;
+            $scope.$watch('nodeSystem', function (newValue,OldValue) {
+                if(newValue) {
+                    $state.go('editor.nodesystem', {id: newValue.id})
+                }
+            });
+        }
+    }).state('editor.nodesystem',{
+        url:'/:id',
+        templateUrl:'/partials/editor.nodesystem.html',
+        controller:'EditorController',
+        resolve:{
+            nodeSystem:function($sailsSocket,$stateParams){
+                return $sailsSocket.get('/api/nodesystem/'+$stateParams.id)
+            }
+        }
+
     }).state('types',{
         url:'/types',
         templateUrl:'/partials/types.html',
