@@ -9,16 +9,21 @@
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <ul class="nav nav-pills nav-stacked">
                 <li ng-repeat="type in types" ui-sref-active="active">
-                   <a ui-sref="types.params({type:type.name})">{{type.name}}</a>
-                    <button  class="btn btn-sm btn-danger">
-                        <span ng-click="deleteType(type)" class="glyphicon glyphicon-trash"></span>
-                    </button>
+                   <a ui-sref="types.params({type:type.name})">
+                       <button ng-click="deleteType(type)" class="btn btn-sm btn-danger pull-right">
+                           <span  class="glyphicon glyphicon-trash"></span>
+                       </button>
+                       {{type.name}}
+
+                   </a>
 
                 </li>
                 <hr/>
                 <li>
                     <input type="text" ng-model="newTypeName"/>
-                    <button ng-click="createType(newTypeName)" class="btn btn-sm btn-success">Create</button>
+                    <button ng-click="createType(newTypeName)"
+                            ng-disabled="!newTypeName"
+                            class="btn btn-sm btn-success">Create</button>
                 </li>
             </ul>
         </div>

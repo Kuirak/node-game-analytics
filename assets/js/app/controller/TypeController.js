@@ -14,6 +14,9 @@ app.controller('TypeController',function($scope, $sailsSocket,$http, $stateParam
     };
 
     $scope.createType = function (name) {
+        if(!name){
+            return;
+        }
         $scope.newTypeName ='';
         $sailsSocket.post('/api/type',{name:name}).success(function(data){
             console.log(data);
@@ -33,7 +36,9 @@ app.controller('TypeController',function($scope, $sailsSocket,$http, $stateParam
 //        }).catch(console.error);
     };
     $scope.createParam = function (name,type) {
-        console.log(name,type);
+        if(!name || !type){
+            return;
+        }
         if(!$scope.selectedType.params){
             $scope.selectedType.params =[];
         }
@@ -44,6 +49,10 @@ app.controller('TypeController',function($scope, $sailsSocket,$http, $stateParam
         }
         $scope.newParamName='';
         $scope.selectedType.params.push({name:name,type:type})
+    };
+
+    $scope.deleteParam = function (param) {
+        _.remove($scope.selectedType.params,param);
     };
 
 //    (function init(){
