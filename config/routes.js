@@ -31,7 +31,7 @@ module.exports.routes = {
     view: 'home/index',
     skipAssets: true,
     skipRegex:[/\/api.*/]
-  },
+  }
 //  '/dashboard':{
 //        view:'home/index'
 //  }

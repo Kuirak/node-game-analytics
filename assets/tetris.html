@@ -1,0 +1,217 @@
+<html>
+<head><title>Emre's JavaScript Tetris</title>
+    <style>
+        body, table {
+            font-family: Tahoma, serif;
+            font-size: 10px;
+            font-style: normal;
+            line-height: normal;
+            font-weight: normal;
+            font-variant: normal;
+            text-transform: none;
+            color: #EEEEEE;
+            text-decoration: none;
+            background-color: #333333;
+        }
+
+        input {
+            font-family: Tahoma, serif;
+            font-size: 10px;
+            font-weight: normal;
+            font-style: normal;
+            font-variant: normal;
+            text-transform: none;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+
+<table border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td><a href="javascript:instantmovecheck();" id="InstantMoveCheckbox" style="text-decoration:none;"
+               title="click to toggle"><span style="color: #FF0000; ">Instant Move Off</span></a></td>
+    </tr>
+    <tr>
+        <td><span id="V1" style="color: #00FF00; "></span></td>
+    </tr>
+    <tr>
+        <td><span id="V2" style="color: #00FF00; "></span></td>
+    </tr>
+    <tr>
+        <td><span id="V3" style="color: #00FF00; "></span></td>
+    </tr>
+    <tr>
+        <td><span id="V4" style="color: #00FF00; "></span></td>
+    </tr>
+    <tr>
+        <td><a href="javascript:humanCheck();" id="AiCheckbox" style="text-decoration:none;"
+               title="Click to make the AI play"><span style="color: #FF0000; ">Make AI play Tetris</span></a></td>
+    </tr>
+
+</table>
+
+<div id="PlaceHolderDIV"></div>
+
+<script>
+    'use strict';
+    var vx1 = document.getElementById('V1');
+    var vx2 = document.getElementById('V2');
+    var vx3 = document.getElementById('V3');
+    var vx4 = document.getElementById('V4');
+    /**
+     * @return {string}
+     */
+    function V1(x) {
+        if (x !== undefined) vx1.innerHTML = x;
+        else return vx1.innerHTML;
+    }
+    /**
+     * @return {string}
+     */
+    function V2(x) {
+        if (x !== undefined) vx2.innerHTML = x;
+        else return vx2.innerHTML;
+    }
+    /**
+     * @return {string}
+     */
+    function V3(x) {
+        if (x !== undefined) vx3.innerHTML = x;
+        else return vx3.innerHTML;
+    }
+    /**
+     * @return {string}
+     */
+    function V4(x) {
+        if (x !== undefined) vx4.innerHTML = x;
+        else return vx4.innerHTML;
+    }
+</script>
+
+
+
+<script src="js/components/sails.io.js.js"></script>
+<script src="js/examples/tetris.min.js"></script>
+
+
+
+<script>
+    'use strict';
+    /*****************************************************************************/
+    var SIMULTANEOUS_FIELDS = 1;
+    var PIECENAMES = ['I', 'T', 'Z', 'S', 'O', 'J', 'L'];
+
+    /*****************************************************************************/
+
+    var PlaceHolder = document.getElementById('PlaceHolderDIV');
+    var cake = new Array(SIMULTANEOUS_FIELDS);
+    var gametype =0;
+    var instantmove = 0;
+
+    function instantmovecheck() {
+        if (instantmove) {
+            instantmove = 0;
+            document.getElementById('InstantMoveCheckbox').innerHTML = '<span style="color: #FF0000; ">Instant Move Off</span>';
+        }
+        else {
+            instantmove = 1;
+            document.getElementById('InstantMoveCheckbox').innerHTML = '<span style="color: #FFFFFF; ">Instant Move On</span>';
+        }
+    }
+    function humanCheck(){
+        if(gametype){
+            gametype= 0;
+            document.getElementById('AiCheckbox').innerHTML = '<span style="color: #FF0000; ">AI Off</span>';
+        }else {
+            gametype=1;
+            document.getElementById('AiCheckbox').innerHTML = '<span style="color: #FFFFFF; ">AI On</span>';
+        }
+    }
+
+    function bakecake(i) {
+        //TODO round start
+        Analytics.createEvent('RoundStart');
+        cake[i].wipefield();
+        cake[i].tetris.setTetris();
+        cake[i].nextshape();
+        cake[i].nextshape();
+        cake[i].tetris.gameover = 0;
+        cake[i].tetris.rows_completed = 0;
+    }
+
+    function newcake(i) {
+        //TODO session start
+        Analytics.createEvent('SessionStart');
+        cake[i] = new FIELD();
+        cake[i].makefield(10, 20);
+        cake[i].initfield(10 + (140 * i), 130, 12, 12, 1, 2);
+        cake[i].plotframe();
+        cake[i].createfield();
+    }
+
+    function EverythingStartsHere() {
+        var i;
+        var twdlength = window.location.search.length;
+        var fields = window.location.search.substring(8, twdlength);
+        for (i = 0; i < SIMULTANEOUS_FIELDS; i++) {
+            newcake(i);
+            bakecake(i);
+        }
+        setTimeout("gameloop()", 5);
+    }
+
+    function restartcake(i) {
+        var score =cake[i].tetris.rows_completed;
+        if (V4() == '') V4('Previous Scores: ' + score); else V4(V4() + ' ' + score);
+        //TODO round end
+        Analytics.createEvent('RoundEnd',{score: score});
+        bakecake(i);
+    }
+
+    function gameloop() {
+        var i;
+        for (i = 0; i < SIMULTANEOUS_FIELDS; i++) {
+            if (i == 0) {
+                if (gametype == 0) {
+                    cake[i].userinput();
+                }
+                else {
+                    cake[i].cpuplayer(instantmove);
+                }
+            } else {
+                cake[i].cpuplayer(instantmove);
+            }
+            if (instantmove && cake[i].tetris.display_rows != cake[i].tetris.rows_completed)
+                cake[i].messageframe.innerHTML = 'Rows: ' + (cake[i].tetris.display_rows = cake[i].tetris.rows_completed);
+            cake[i].plotfield();
+            if (cake[i].tetris.gameover) restartcake(i);
+        }
+        setTimeout('gameloop()', 5);
+    }
+
+    /**
+     * @return {number}
+     */
+    function IsDigit(s) {
+        var svalid = '0123456789', sc;
+        if (s.length != 1) return 0;
+        sc = s.charAt(0);
+        if (svalid.indexOf(sc) == -1) return 0;
+        return 1;
+    }
+
+    if (is_ie)
+        window.attachEvent('onload', EverythingStartsHere);
+    else
+        window.addEventListener('load', EverythingStartsHere, false);
+
+    window.onbeforeunload = function(){
+        Analytics.createEvent('RoundEnd',{score:cake[0].tetris.rows_completed});
+        Analytics.createEvent('SessionEnd');
+    };
+    //TODO session end on unload
+</script>
+</body>
+</html>
