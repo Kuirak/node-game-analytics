@@ -10,7 +10,7 @@ module.exports = {
 	attributes: {
         nodesystems:{collection:'nodesystem', via:"game"},
         events:{collection:'event',via:'game'},
-        title:{type:'string',required:true,unique:true},
+        title:{type:'string',required:true},
         owner:{model:'user'},
         types:{collection:'type',via:'game'}
 	}

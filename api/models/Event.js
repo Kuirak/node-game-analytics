@@ -25,9 +25,10 @@ module.exports = {
                  return;
              }
            if(_.difference(_.map(type.params,function(param){return param.title;}), _.keys(values.params)).length >0){
-               //TODO validate types
-               done(new Error("Event type params not matching: " + values.type +" | " + type.params));
+
+               done(new Error("Event type params not matching: " + values.type +" | " + type.name));
            }else{
+               //TODO validate types
                done();
            }
          })
