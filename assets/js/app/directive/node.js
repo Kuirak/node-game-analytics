@@ -19,7 +19,7 @@ app.directive("node",function(){
             $scope.connect = function(event,source,target){
                 console.log(source,target);
                 var connection= {source:source,target:target};
-                if(source.id === target.id){
+                if(source.node.id === target.node.id){
                     return;
                 }
                 //connection exits
