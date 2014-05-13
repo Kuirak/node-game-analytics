@@ -7,12 +7,6 @@
  */
 
 module.exports = {
-    subscribe:function(req,res){
-        if(req.isSocket) {
-            Event.watch(req.socket);
-            res.end(200);
-        }
 
-    },
 };
 

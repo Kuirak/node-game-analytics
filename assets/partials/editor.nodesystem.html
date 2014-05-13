@@ -1,7 +1,15 @@
 
-<div class="container">
-	<h1 class="pull-left">{{nodeSystem.name}}</h1>
-    <div class="pull-right"><a class="btn btn-danger" ng-click="save()">Save</a></div>
+<div class="row">
+    <ul class="nav navbar-nav">
+        <li><a >{{nodeSystem.name}}</a></li>
+        <li>
+            <a class="dropdown-toggle">Create Node <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li ng-repeat="nodeType in nodeTypes"><a href="#" ng-click="createNode(nodeType)">{{nodeType}}</a></li>
+            </ul>
+        </li>
+        <li> <a href="#" ng-click="save()">Save</a></li>
+    </ul>
 </div>
 <hr/>
 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -11,16 +19,15 @@
         </div>
         <div class="panel-body">
             <div ng-repeat="connection in connections">
-                <p>ID {{connection.source.node.id}} {{connection.source.output.title}} <span class="glyphicon glyphicon-chevron-right"></span> ID
-                    {{connection.target.node.id}} {{connection.target.input.title}}
+                <p>ID {{connection.source.node.id}} {{connection.source.output.name}} <span class="glyphicon glyphicon-chevron-right"></span> ID
+                    {{connection.target.node.id}} {{connection.target.input.name}}
                     <a ng-click="unconnect(connection)" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-trash"></span></a>
                 </p>
             </div>
         </div>
     </div>
 </div>
-<div ng-repeat="node in nodes" node-draggable>
-    <node>
-        <p>Transclude: {{node.title}}</p>
+<div ng-repeat="node in nodes">
+    <node node="node">
     </node>
 </div>

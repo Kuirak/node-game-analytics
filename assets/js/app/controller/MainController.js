@@ -19,9 +19,6 @@ app.controller("MainController", function ($scope,$sailsSocket ) {
                 $scope.events.push(message.data);
             }
         });
-        $sailsSocket.get('/api/event/subscribe').success(function(data){
-            console.log("Subscribed")
-        });
         $sailsSocket.get('/api/event').success(function(data){
             $scope.events =data;
         }).error(function(err){

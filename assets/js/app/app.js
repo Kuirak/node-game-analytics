@@ -36,6 +36,9 @@ app.config(function($stateProvider,$locationProvider){
         resolve:{
             nodeSystem:function($sailsSocket,$stateParams){
                 return $sailsSocket.get('/api/nodesystem/'+$stateParams.id)
+            },
+            eventTypes: function($sailsSocket){
+                return  $sailsSocket.get('/api/type');
             }
         }
 
