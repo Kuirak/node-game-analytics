@@ -16,6 +16,27 @@ app.directive("node",function(){
                     return conn.source.node.id === id || conn.target.node.id ===id;
                 })
             };
+            $scope.connect = function(event,source,target){
+                console.log(source,target);
+                var connection= {source:source,target:target};
+                if(source.id === target.id){
+                    return;
+                }
+                //connection exits
+                if(_.find($scope.$parent.connections,connection)){
+                    return;
+                }
+                //Connection with same source exists
+                if(_.find($scope.$parent.connections,{source:source})){
+                    return;
+                }
+                //connection with same target exists
+                if(_.find($scope.$parent.connections,{target:target})){
+                    return;
+                }
+                $scope.connections.push(connection);
+            };
+
             $scope.eventTypes =$scope.$parent.eventTypes;
             $scope.$watch('node.data.eventType',function(newValue,oldValue){
                if(newValue){

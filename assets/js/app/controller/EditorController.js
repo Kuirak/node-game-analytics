@@ -12,23 +12,7 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
     $scope.nodes=$scope.nodeSystem.nodes;
     $scope.eventTypes =eventTypes.data;
 
-    $scope.connect = function(event,source,target){
-        console.log(source,target);
-        var connection= {source:source,target:target};
-        //connection exits
-        if(_.find($scope.connections,connection)){
-            return;
-        }
-        //Connection with same source exists
-        if(_.find($scope.connections,{source:source})){
-            return;
-        }
-        //connection with same target exists
-        if(_.find($scope.connections,{target:target})){
-            return;
-        }
-        $scope.connections.push(connection);
-    };
+
 
     $scope.unconnect =function(connection){
         _.remove($scope.connections,connection);
@@ -69,6 +53,8 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
         }else if(nodeType ==='count'){
             node.outputs=[{name:'count',type:'number'}];
             //TODO add value channel
+            node.inputs=[{name:'value',type:'number'}];
+        }else if( nodeType === 'valueOutput'){
             node.inputs=[{name:'value',type:'number'}];
         }
         $scope.nodes.push(node);
