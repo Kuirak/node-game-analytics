@@ -34,7 +34,7 @@ app.directive("node",function(){
                 if(_.find($scope.$parent.connections,{target:target})){
                     return;
                 }
-                $scope.connections.push(connection);
+                $scope.$parent.connections.push(connection);
             };
 
             $scope.eventTypes =$scope.$parent.eventTypes;
