@@ -1,14 +1,14 @@
 <div class="container">
     <div class="row">
         <ul class="nav navbar-nav">
-       <li class="dropdown ">
-           <a class="dropdown-toggle btn-sm btn-success">Choose A Node System <span class="caret"></span></a>
-           <ul class="dropdown-menu">
-               <li ng-repeat="ns in nodeSystems">
-                   <a ui-sref="editor.nodesystem({id:ns.id})">{{ns.name}}</a>
-               </li>
-           </ul>
-       </li>
+            <li class="dropdown ">
+                <a class="dropdown-toggle btn-sm btn-success">Choose A Node System <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li ng-repeat="ns in nodeSystems">
+                        <a ui-sref="editor.nodesystem({id:ns.id})">{{ns.name}}</a>
+                    </li>
+                </ul>
+            </li>
 
         </ul>
     </div>

@@ -11,6 +11,8 @@ module.exports = {
   attributes: {
     type:{type:'string',required:true,notNull:true},
     params:{type:'json'},
+    session:{type:'string',required:true},
+    user:{type:'string',required:true},
     timestamp:{type:'string'},
     game:{model:'game'}
   },beforeCreate:function(values,done){

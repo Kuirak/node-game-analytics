@@ -39,6 +39,9 @@ app.directive("node",function(){
 
             $scope.eventTypes =$scope.$parent.eventTypes;
             $scope.$watch('node.data.eventType',function(newValue,oldValue){
+                if(newValue === oldValue){
+                    return;
+                }
                if(newValue){
                    var eventType = _.find($scope.eventTypes,{name:newValue});
                    $scope.node.outputs =[{name:'time',type:'timestamp'}];

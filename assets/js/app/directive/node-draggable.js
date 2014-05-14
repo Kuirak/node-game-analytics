@@ -1,21 +1,16 @@
 'use strict';
 /**
  * Created by Jonas Kugelmann on 11.04.2014.
+ * Ref: http://stackoverflow.com/questions/20393855/angularjs-draggable-directive
  */
 app.directive('nodeDraggable',['$document',function($document){
     return {link:function(scope,element,attr){
         // to prevent  dragging  drag n drop items ad node-draggable directive and it negates the effect
-        if(attr.uiDraggable){
-            element.css({cursor:'crosshair'});
-            element.on("mousedown",function(e){
-                e.stopPropagation();
-            });
-            return;
-        }
         var startX = 0,startY = 0,x= scope.node.x,y=scope.node.y;
         element.css({
-            position:'relative',
+            position:'absolute',
             cursor:'move',
+            width:'20em',
             left:x+'px',
             top:y+'px'
         });
