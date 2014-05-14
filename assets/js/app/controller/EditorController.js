@@ -41,7 +41,7 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
             id: id,
             data:{
                 nodeType:nodeType
-            },
+            }
         };
         if(nodeType ==='input'){
             var eventType =_.first($scope.eventTypes);
@@ -53,7 +53,7 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
         }else if(nodeType ==='count'){
             node.outputs=[{name:'count',type:'number'}];
             //TODO add value channel
-            node.inputs=[{name:'value',type:'number'}];
+            node.inputs=[{name:'value',type:'timestamp'}];
         }else if( nodeType === 'valueOutput'){
             node.inputs=[{name:'value',type:'number'}];
         }

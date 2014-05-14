@@ -44,7 +44,11 @@ app.directive("node",function(){
                    $scope.node.outputs =[{name:'time',type:'timestamp'}];
                    _.each(eventType.params,function(output){
                        $scope.node.outputs.push(output);
-                   })
+                   });
+                   _.remove($scope.$parent.connections,function(conn){
+                       if(conn.source.output.type ==='timestamp')return false;
+                       return conn.source.node.id === $scope.node.id ;});
+
                }
             });
 
