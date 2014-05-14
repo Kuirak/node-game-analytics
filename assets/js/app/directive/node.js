@@ -27,9 +27,9 @@ app.directive("node",function(){
                     return;
                 }
                 //Connection with same source exists
-                if(_.find($scope.$parent.connections,{source:source})){
-                    return;
-                }
+//                if(_.find($scope.$parent.connections,{source:source})){
+//                    return;
+//                }
                 //connection with same target exists
                 if(_.find($scope.$parent.connections,{target:target})){
                     return;
