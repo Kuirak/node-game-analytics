@@ -1,3 +1,4 @@
+"use strict";
 /**
  * NodesystemController.js 
  *
@@ -6,5 +7,9 @@
  */
 
 module.exports = {
-	
+	run:function(req,res){
+       EventProcessor.run();
+       res.end();
+
+    }
 };
