@@ -1,0 +1,8 @@
+<div class="pull-left">
+    <div ng-repeat="input in node.inputs">
+        <div class="circle node-circle node-input"
+             ui-on-drop="connect($event,$data,{input:{{input}},node:{{node}}})">
+        </div>
+        <span>{{input.name}}</span>
+    </div>
+</div>

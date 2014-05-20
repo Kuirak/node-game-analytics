@@ -24,6 +24,7 @@
     "lodash": "~2.4.1",
     "d3": "~3.4.5",
     "angular-dragdrop-ganarajpr": "~1.0.1",
-    "angularSails": "https://github.com/Kuirak/angularSails.git"
+    "angularSails": "https://github.com/Kuirak/angularSails.git",
+    "uuid-js": "~0.7.5"
   }
 }

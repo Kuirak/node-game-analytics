@@ -1,0 +1,11 @@
+<div class="pull-right">
+    <div ng-repeat="output in node.outputs">
+        <span>{{output.name}}</span>
+        <div class="circle node-circle node-output"
+             not-node-draggable
+             ui-draggable="true"
+             drag="{output: {{output}},node:{{node}}}">
+        </div>
+    </div>
+
+</div>

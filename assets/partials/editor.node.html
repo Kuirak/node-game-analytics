@@ -11,29 +11,8 @@
             <div class="well" ng-if="node.data.nodeType ==='input'">
                 <select not-node-draggable ng-model="node.data.eventType" ng-options="e.name as e.name for e in eventTypes"></select>
             </div>
-            <div class="pull-left">
-                <div ng-repeat="input in node.inputs">
-                    <div class="circle node-circle node-input"
-
-                         ui-on-drop="connect($event,$data,{input:{{input}},node:{{node}}})">
-
-                    </div>
-                    <span>{{input.name}}</span>
-                </div>
-            </div>
-            <div class="pull-right">
-                <div ng-repeat="output in node.outputs">
-                    <span>{{output.name}}</span>
-
-                    <div class="circle node-circle node-output"
-                         not-node-draggable
-                         ui-draggable="true"
-                         drag="{output: {{output}},node:{{node}}}">
-
-                    </div>
-                </div>
-
-            </div>
+            <node-inputs></node-inputs>
+            <node-outputs></node-outputs>
 
         </div>
     </div>
