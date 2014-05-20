@@ -21,11 +21,11 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
 
     $scope.save = function(){
         $scope.nodeSystem.connections= _.map($scope.connections,function(conn){
-            var output_idx = _.findIndex(conn.source.node.outputs,conn.source.output);
-            var input_idx = _.findIndex(conn.target.node.inputs,conn.target.input);
+            var output = conn.source.output.name;
+            var input= conn.target.input.name;
             return{
-                source:{node_id:conn.source.node.id,output_idx:output_idx},
-                target:{node_id:conn.target.node.id,input_idx:input_idx}
+                source:{node_id:conn.source.node.id,output:output},
+                target:{node_id:conn.target.node.id,input:input}
             };
         });
         $sailsSocket.put('/api/nodesystem/'+$scope.nodeSystem.id,$scope.nodeSystem).success(function(data){
@@ -68,8 +68,8 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
             var source= _.find($scope.nodes,{id:connection.source.node_id});
             var target= _.find($scope.nodes,{id:connection.target.node_id});
           return  {
-              source:{node:source,output: source.outputs[connection.source.output_idx]},
-              target:{node:target,input: target.inputs[connection.target.input_idx]}
+              source:{node:source,output: source.outputs[connection.source.output]},
+              target:{node:target,input: target.inputs[connection.target.input]}
           }
         })
     }());
