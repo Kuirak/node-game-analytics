@@ -15,6 +15,15 @@ var NodeType={
     min:'min',
     average:'average'
 };
+var Transformations ={};
+Transformations.none={};
+Transformations.none.write =function(model,index,next){
+    next(null,model);
+};
+Transformations.none.end =function(next){
+    next(null);
+};
+
 module.exports={
   eventCreated: function(event){
       sails.log.verbose("Event created: ",event.type,event.session);
@@ -41,13 +50,7 @@ function init(){
     Nodesystem.find().then(function(data){
         runningSystems= _.map(data,setupNodeSystem);
         _.each(runningSystems,function(system){
-            Q(_.map(system.input,function(input){
-                return input.init();
-            })).then(function(){
-                _.forIn(system.input,function(value,key){
-                    Event.stream({type:key}).pipe(value);
-                })
-            });
+
 
         });
     }).fail(sails.log.error);
@@ -61,26 +64,37 @@ function setupNodeSystem(system){
     });
     nodeSystem.nodes =nodes;
     //filter Input and sort for eventType;
-    _.chain(nodes)
+    var promises= _.chain(nodes)
         .select(function(node){return node instanceof Input;})
         .each(function(node){
             if(!nodeSystem.input[node.eventType]){
                 nodeSystem.input[node.eventType] =[];
             }
             nodeSystem.input[node.eventType].push(node);
+        }).map(function(input){
+            return input.init();
+        }).value();
+
+
+    Q.all(promises).then(function(){
+        _.each(system.connections,function(conn){
+            var source = _.find(nodes,{id:conn.source.node_id});
+            var target = _.find(nodes,{id:conn.target.node_id});
+            var output =source.outputs[conn.source.output];
+            target.setupInput(conn.target.input,output);
+
         });
+        _.each(nodes,function(node){
+            if(!node.mux)return;
+            node.mux();//maybe rename start
+        });
+        _.forIn(nodeSystem.input,function(value,key){
+            _.each(value,function(input){
+                Event.stream({type:key},Transformations.none).pipe(input);
+            });
 
-    _.each(system.connections,function(conn){
-        var source = _.find(nodes,{id:conn.source.node_id});
-        var target = _.find(nodes,{id:conn.target.node_id});
-
-        target.setupInput(conn.target.input,source.output(conn.source.output));
-
+        })
     });
-    _.each(nodes,function(node){
-        node.mux();//maybe rename start
-    });
-
 
     return nodeSystem;
 
@@ -123,6 +137,10 @@ Input.prototype.output = function(name){
 };
 
 Input.prototype._write = function(chunk,enc,next){
+    if(!chunk){next();return;}
+//    if(chunk ==='[' || chunk ===']'){next();return;}
+//    if(chunk[0] ===','){chunk=chunk.substring(1);}
+//    chunk=JSON.parse(chunk);
     var self =this;
     self.outputs.timestamp.write(chunk.timestamp);
     _.forIn(chunk.params,function(output,name){
@@ -131,6 +149,12 @@ Input.prototype._write = function(chunk,enc,next){
     next();
 };
 
+util.inherits(OutputNode,Node);
+function OutputNode(id){
+    Node.call(this,id,{inputs:[{name:'value',type:'number'}]});
+    this.transform = new ConsoleStream();
+
+}
 
 util.inherits(ConsoleStream,stream.Writable);
 function ConsoleStream(id){
@@ -146,6 +170,7 @@ util.inherits(CountNode,Node);
 function CountNode(id){
     Node.call(this,id,{inputs:[{name:'value',type:'number'}],outputs:[{name:'count',type:'number'}]});
     this.transform = new CountTransform();
+    this.transform.pipe(this.demux);
 }
 util.inherits(CountTransform,stream.Transform);
 function CountTransform(id){
@@ -158,7 +183,7 @@ CountTransform.prototype._transform = function(chunk,enc,next){
     if(chunk){
         this.count +=1;
         //write to cache
-        this.push(this.count);
+        this.push([{name:'count',data:this.count}]);
     }
 
     next();
@@ -169,6 +194,7 @@ util.inherits(MaxNode,Node);
 function MaxNode(id){
     Node.call(this,id,{inputs:[{name:'value',type:'number'}],outputs:[{name:'max',type:'number'}]});
     this.transform = new MaxTransform();
+    this.transform.pipe(this.demux);
 }
 
 util.inherits(MaxTransform,stream.Transform);
@@ -176,14 +202,15 @@ function MaxTransform(id){
     this.id =id;
     stream.Transform.call(this,{objectMode:true});
     this.max =0; //get count form Cache
+
 }
 
 MaxTransform.prototype._transform = function(chunk,enc,next){
     if(chunk){
-        if (chunk > this.max){
-            this.max = chunk;
+        if (chunk[0].data > this.max){
+            this.max = chunk[0].data;
             //write to cache
-            this.push(this.max);
+            this.push([{name:'max',data:this.max}]);
         }
     }
     next();
@@ -193,6 +220,7 @@ util.inherits(MinNode,Node);
 function MinNode(id){
     Node.call(this,id,{inputs:[{name:'value',type:'number'}],outputs:[{name:'min',type:'number'}]});
     this.transform = new MinTransform();
+    this.transform.pipe(this.demux);
 }
 
 util.inherits(MinTransform,stream.Transform);
@@ -202,10 +230,10 @@ function MinTransform(){
 }
 MinTransform.prototype._transform = function(chunk,enc,next){
     if(chunk) {
-        if (chunk < this.min) {
-            this.min = chunk;
+        if (chunk[0].data < this.min) {
+            this.min = chunk[0].data;
             //write to cache
-            this.push(this.min);
+            this.push([{name:'min',data:this.min}]);
         }
     }
     next();
@@ -215,25 +243,24 @@ util.inherits(AverageNode,Node);
 function AverageNode(id){
     Node.call(this,id,{inputs:[{name:'value',type:'number'}],outputs:[{name:'average',type:'number'}]});
     this.transform = new AverageTransform();
+    this.transform.pipe(this.demux);
 }
 util.inherits(AverageTransform,stream.Transform);
 function AverageTransform(id){
     this.id =id;
     stream.Transform.call(this,{objectMode:true});
     this.average = 0;
-    this.value =0;
-    this.count=0;//get count form Cache
+    //get count form Cache
 }
 
 AverageTransform.prototype._transform = function(chunk,enc,next){
     if(chunk) {
-        this.value +=chunk;
-        this.count +=1;
-        var average= this.value /this.count;
-        if (average !== this.average) {
-            this.average = average;
-            //write to cache
-            this.push(this.average);
+        var average= this.average;
+        average+=chunk[0].data;
+        average =average /2;
+        if(average !== this.average){
+            this.average =average;
+            this.push([{name:'average',data:this.average}])
         }
     }
     next();
@@ -267,7 +294,6 @@ function Node(id,options){
     });
     self.demux = new Demux(self.outputs);
 
-
 }
 
 Node.create = function(node){
@@ -280,7 +306,7 @@ Node.create = function(node){
     }else if(node.data.nodeType === NodeType.average){
         return new AverageNode(node.id);
     }else if(node.data.nodeType === NodeType.valueOutput){
-        return new ConsoleStream(node.id);
+        return new OutputNode(node.id);
     }else if(node.data.nodeType ===NodeType.input){
         return new Input(node.id,node.data.eventType);
     }
@@ -290,10 +316,10 @@ Node.create = function(node){
 
 Node.prototype.setupInput =function(inputname,readable){
     var self =this;
-    if(!_.some(self.inputs,{name:name})){
+    if(!_.some(self.inputs,{name:inputname})){
         throw new Error("This input doesn't exist " +name);
     }
-    self.source[inputname]=readable;
+    self.sources[inputname]=readable;
 };
 
 Node.prototype.mux =function(){
@@ -322,4 +348,5 @@ Node.prototype.output = function(name){
 //Count.mux({value:Input.outputs['score']});
 //count output count into output input value
 //Output.mux({value:Count.outputs['count']});
+
 
