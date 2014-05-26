@@ -20,11 +20,12 @@ function MinTransform(){
 }
 MinTransform.prototype._transform = function(chunk,enc,next){
     if(chunk) {
-        if (chunk[0].data < this.min) {
-            this.min = chunk[0].data;
-            chunk[0].name ='min';
+        var value = chunk.value;
+        if (value.data < this.min) {
+            this.min = value.data;
+            value.name ='min';
             //write to cache
-            this.push(chunk);
+            this.push([value]);
         }
     }
     next();

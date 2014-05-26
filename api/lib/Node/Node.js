@@ -47,13 +47,13 @@ Node.prototype.attachInput =function(inputname,readable){
  *
  */
 Node.prototype.setupInputs =function(){
-    var data=[];
+    var data={};
     var self =this;
     _.forIn(self.sources,function(stream,name){
         stream.on('data',function(chunk){
             stream.pause();
             chunk.name =name; //changes name to input name
-            data.push(chunk);
+            data[name]=chunk;
             if(data.length === _.size(self.sources)){
                 self.transform.write(data);
                 data.length=0;

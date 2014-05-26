@@ -23,14 +23,15 @@ function AverageTransform(id){
 
 AverageTransform.prototype._transform = function(chunk,enc,next){
     if(chunk) {
+        var value =chunk.value;
         var average= this.average;
-        average+=chunk[0].data;
+        average+=value.data;
         average =average /2;
         if(average !== this.average){
             this.average =average;
-            chunk[0].name ='average';
-            chunk[0].data =this.average;
-            this.push(chunk)
+            value.name ='average';
+            value.data =this.average;
+            this.push([value])
         }
     }
     next();

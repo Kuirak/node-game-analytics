@@ -6,20 +6,14 @@ var stream = require('stream')
     ,util = require('util')
     ,Q=require('q')
     ,Node =require('../lib/Node')
-    ,Input =require('../lib/Node/InputNode');
+    ,Input =require('../lib/Node/InputNode')
+    ,Transformations =require('../lib/Transformations');
 var isRunning =false;
 var runningSystems =[];
 var inputs={};
 
-//removes strange standard trasnformations of Waterlines stream()
-var Transformations ={};
-Transformations.none={};
-Transformations.none.write =function(model,index,next){
-    next(null,model);
-};
-Transformations.none.end =function(next){
-    next(null);
-};
+
+
 
 module.exports={
   eventCreated: function(event){
@@ -33,12 +27,11 @@ module.exports={
 
   },
   run: function(){
-
+      //TODO start on server start
       if(isRunning){
           return;
       }
       //setup system
-
       init();
       isRunning =true;
   },nodeSystemCreated: function(nodeSystem){
@@ -50,14 +43,12 @@ module.exports={
 function init(){
     Nodesystem.find().then(function(data){
         runningSystems= _.map(data,setupNodeSystem);
-        _.each(runningSystems,function(system){
-        });
     }).fail(sails.log.error);
 
 }
 
 function setupNodeSystem(system){
-    var nodeSystem ={name:system.name,input:{}};
+    var nodeSystem ={name:system.name,input:{},dbSource:system};
     var nodes= _.map(system.nodes,function(node){
             return Node.create(node);
     });
@@ -74,6 +65,7 @@ function setupNodeSystem(system){
             }
             inputs[node.eventType].push(node);
             nodeSystem.input[node.eventType].push(node);
+            //TODO maybe add system/event stream
         }).map(function(input){ //init input returns promise
             return input.init();
         }).value();

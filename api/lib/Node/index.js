@@ -8,7 +8,8 @@ var NodeType =require('./NodeType')
     ,MinNode =require('./MinNode')
     ,AverageNode =require('./AverageNode')
     ,ValueOutputNode =require('./ValueOutputNode')
-    ,InputNode =require('./InputNode');
+    ,InputNode =require('./InputNode')
+    ,EqualsNode =require('./EqualsNode');
 
 function create(node){
     if(node.data.nodeType === NodeType.count){
@@ -23,6 +24,8 @@ function create(node){
         return new ValueOutputNode(node.id);
     }else if(node.data.nodeType ===NodeType.input){
         return new InputNode(node.id,node.data.eventType);
+    }else if(node.data.nodeType ===NodeType.equals){
+        return new EqualsNode(node.id);
     }
 
 }

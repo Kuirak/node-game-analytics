@@ -23,7 +23,7 @@
     "grunt-contrib-less": "~0.10.0",
     "grunt-contrib-coffee": "~0.10.1",
     "grunt-bower": "^0.9.1",
-    "sails-postgresql": "~0.10.0",
+    "sails-postgresql": "Kuirak/sails-postgresql",
     "bcryptjs": "^0.7.12",
     "q": "^1.0.1"
   },

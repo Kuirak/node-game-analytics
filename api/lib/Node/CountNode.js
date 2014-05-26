@@ -21,11 +21,12 @@ function CountTransform(id){
 
 CountTransform.prototype._transform = function(chunk,enc,next){
     if(chunk){
+        var value =chunk.value;
         this.count +=1;
-        chunk[0].name ='count';
-        chunk[0].data =this.count;
+        value.name ='count';
+        value.data =this.count;
         //write to cache
-        this.push(chunk);
+        this.push([value]);
     }
 
     next();

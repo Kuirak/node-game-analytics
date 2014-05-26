@@ -9,5 +9,6 @@ module.exports={
     valueOutput:'valueOutput',
     max:'max',
     min:'min',
-    average:'average'
+    average:'average',
+    equals:'equals'
 };

@@ -23,11 +23,12 @@ function MaxTransform(id){
 
 MaxTransform.prototype._transform = function(chunk,enc,next){
     if(chunk){
-        if (chunk[0].data > this.max){
-            this.max = chunk[0].data;
-            chunk[0].name ='max';
+        var value = chunk.value;
+        if (value.data > this.max){
+            this.max = value.data;
+            value.name ='max';
             //write to cache
-            this.push(chunk);
+            this.push([value]);
         }
     }
     next();
