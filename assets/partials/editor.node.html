@@ -1,10 +1,14 @@
 <div >
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">ID {{node.id}} - {{node.data.nodeType}} </h3>
-            <button ng-click="removeNode(node.id)" class="btn-sm btn-danger">
+            <button ng-click="removeNode(node.id)" class="pull-right btn-sm btn-danger">
                 <span class="glyphicon glyphicon-remove"></span>
             </button>
+            <h3 class="panel-title">ID {{node.id}} - {{node.data.nodeType}} </h3>
+            <div class="clearfix">
+                
+            </div>
+
         </div>
         <div class="panel-body">
             <div ng-transclude></div>

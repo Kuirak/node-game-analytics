@@ -68,8 +68,8 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
             var source= _.find($scope.nodes,{id:connection.source.node_id});
             var target= _.find($scope.nodes,{id:connection.target.node_id});
           return  {
-              source:{node:source,output: source.outputs[connection.source.output]},
-              target:{node:target,input: target.inputs[connection.target.input]}
+              source:{node:source,output: _.find(source.outputs,{name:connection.source.output})},
+              target:{node:target,input: _.find(target.inputs,{name:connection.target.input})}
           }
         })
     }());
