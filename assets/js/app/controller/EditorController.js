@@ -4,7 +4,7 @@
  */
 app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventTypes){
     $scope.nodeSystem =nodeSystem.data;
-    $scope.nodeTypes= ['input','count','valueOutput','max','min','average'];
+    $scope.nodeTypes= ['input','count','valueOutput','max','min','average','equals'];
     var connections =$scope.nodeSystem.connections;
     $scope.selectedNode =null;
     $scope.connecting=false;
@@ -59,6 +59,9 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
         }else if(nodeType === 'min'|| nodeType ==='max'||nodeType==='average'){
             node.outputs=[{name:nodeType,type:'number'}];
             node.inputs=[{name:'value',type:'number'}];
+        }else if(nodeType ==='equals'){
+            node.inputs=[{name:'first',type:'number'},{name:'second',type:'number'}];
+            node.outputs=[{name:'true',type:'number'},{name:'false',type:'number'}];
         }
         $scope.nodes.push(node);
     };
