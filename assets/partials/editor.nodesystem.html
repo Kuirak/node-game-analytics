@@ -4,7 +4,7 @@
         <li>
             <a class="dropdown-toggle">Create Node <span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li ng-repeat="nodeType in nodeTypes"><a href="#" ng-click="createNode(nodeType)">{{nodeType}}</a></li>
+                <li ng-repeat="nodeType in nodeTypes"><a href="#" ng-click="createNode(nodeType)">{{nodeType | titlecase}}</a></li>
             </ul>
         </li>
         <li><a href="#" ng-click="save()">Save</a></li>

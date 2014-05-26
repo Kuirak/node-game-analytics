@@ -42,9 +42,7 @@ CountNotChangingTransform.prototype._transform = function(chunk,enc,next){
             this.push([value]);
             next();
         }
-
         //write to cache
-
     }else{
         next()
     }
