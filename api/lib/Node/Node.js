@@ -54,9 +54,9 @@ Node.prototype.setupInputs =function(){
             stream.pause();
             chunk.name =name; //changes name to input name
             data[name]=chunk;
-            if(data.length === _.size(self.sources)){
+            if(_.size(data) === _.size(self.sources)){
                 self.transform.write(data);
-                data.length=0;
+                data={};
                 _.each(self.sources,function(stream){
                     stream.resume();
                 })
