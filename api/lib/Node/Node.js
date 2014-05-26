@@ -43,7 +43,9 @@ Node.prototype.attachInput =function(inputname,readable){
     self.sources[inputname]=readable;
 };
 
-
+/**
+ *
+ */
 Node.prototype.setupInputs =function(){
     var data=[];
     var self =this;

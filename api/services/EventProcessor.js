@@ -9,7 +9,7 @@ var stream = require('stream')
     ,Input =require('../lib/Node/InputNode');
 var isRunning =false;
 var runningSystems =[];
-
+var inputs={};
 
 //removes strange standard trasnformations of Waterlines stream()
 var Transformations ={};
@@ -27,6 +27,9 @@ module.exports={
       //Put in to system
       //timestamp sort
       //wait until Event.stream() is Done then start  new Event.stream() until real time
+      _.each(inputs[event.type],function(input){
+          input.write(event);
+      });
 
   },
   run: function(){
@@ -66,6 +69,10 @@ function setupNodeSystem(system){
             if(!nodeSystem.input[node.eventType]){
                 nodeSystem.input[node.eventType] =[];
             }
+            if(!inputs[node.eventType]){
+                inputs[node.eventType] =[];
+            }
+            inputs[node.eventType].push(node);
             nodeSystem.input[node.eventType].push(node);
         }).map(function(input){ //init input returns promise
             return input.init();
@@ -86,7 +93,7 @@ function setupNodeSystem(system){
         });
         _.forIn(nodeSystem.input,function(value,key){
             _.each(value,function(input){
-                Event.stream({type:key},Transformations.none).pipe(input);
+                Event.stream({type:key},Transformations.none).pipe(input,{end:false});
             });
 
         })

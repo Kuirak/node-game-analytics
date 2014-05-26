@@ -34,7 +34,8 @@ module.exports = {
             }
         })
     },afterCreate:function(event,done){
-
+        EventProcessor.eventCreated(event);
+        done();
     }
 };
 
