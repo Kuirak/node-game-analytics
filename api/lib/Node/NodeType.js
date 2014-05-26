@@ -10,5 +10,6 @@ module.exports={
     max:'max',
     min:'min',
     average:'average',
-    equals:'equals'
+    equals:'equals',
+    constant:'constant'
 };

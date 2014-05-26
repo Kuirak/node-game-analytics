@@ -13,8 +13,7 @@ function EqualsNode(id){
     this.transform.pipe(this.demux);
 }
 util.inherits(EqualsTransform,stream.Transform);
-function EqualsTransform(id){
-    this.id =id;
+function EqualsTransform(){
     stream.Transform.call(this,{objectMode:true});
 }
 

@@ -9,6 +9,7 @@ var NodeType =require('./NodeType')
     ,AverageNode =require('./AverageNode')
     ,ValueOutputNode =require('./ValueOutputNode')
     ,InputNode =require('./InputNode')
+    ,ConstantNode =require('./ConstantNode')
     ,EqualsNode =require('./EqualsNode');
 
 function create(node){
@@ -26,6 +27,8 @@ function create(node){
         return new InputNode(node.id,node.data.eventType);
     }else if(node.data.nodeType ===NodeType.equals){
         return new EqualsNode(node.id);
+    }else if(node.data.nodeType ===NodeType.constant){
+        return new ConstantNode(node.id,node.data.constant);
     }
 
 }

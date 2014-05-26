@@ -13,8 +13,8 @@ function OutputNode(id){
 }
 
 util.inherits(ConsoleStream,stream.Writable);
-function ConsoleStream(id){
-    this.id =id;
+function ConsoleStream(){
+
     stream.Writable.call(this,{objectMode:true});
 }
 ConsoleStream.prototype._write =function(chunk,enc,next){

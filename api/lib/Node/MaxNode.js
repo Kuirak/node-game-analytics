@@ -14,8 +14,7 @@ function MaxNode(id){
 }
 
 util.inherits(MaxTransform,stream.Transform);
-function MaxTransform(id){
-    this.id =id;
+function MaxTransform(){
     stream.Transform.call(this,{objectMode:true});
     this.max =0; //get count form Cache
 

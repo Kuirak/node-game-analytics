@@ -7,7 +7,14 @@
                     <li ng-repeat="ns in nodeSystems">
                         <a ui-sref="editor.nodesystem({id:ns.id})">{{ns.name}}</a>
                     </li>
+
                 </ul>
+            </li>
+            <li>
+                <input type="text" ng-model="nodeSystemName"/>
+            </li>
+            <li>
+                <a class="btn btn-sm" href="#" ng-click="createNodeSystem(nodeSystemName)" ng-disabled="!nodeSystemName">Create</a>
             </li>
 
         </ul>

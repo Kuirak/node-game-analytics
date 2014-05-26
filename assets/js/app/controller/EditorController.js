@@ -2,9 +2,9 @@
 /**
  * Created by Jonas Kugelmann on 11.04.2014.
  */
-app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventTypes){
+app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventTypes,$state,$rootScope){
     $scope.nodeSystem =nodeSystem.data;
-    $scope.nodeTypes= ['input','count','valueOutput','max','min','average','equals'];
+    $scope.nodeTypes= ['input','count','valueOutput','max','min','average','equals','constant'];
     var connections =$scope.nodeSystem.connections;
     $scope.selectedNode =null;
     $scope.connecting=false;
@@ -30,6 +30,12 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
         });
         $sailsSocket.put('/api/nodesystem/'+$scope.nodeSystem.id,$scope.nodeSystem).success(function(data){
             console.log("Saved ",data);
+        })
+    };
+    $scope.remove = function () {
+        $sailsSocket.delete('/api/nodesystem/'+$scope.nodeSystem.id).success(function(data){
+            $state.go('editor');
+            $rootScope.$emit('editor.nodesystem.delete',{id:data.id});
         })
     };
 
@@ -62,6 +68,9 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
         }else if(nodeType ==='equals'){
             node.inputs=[{name:'first',type:'number'},{name:'second',type:'number'}];
             node.outputs=[{name:'true',type:'number'},{name:'false',type:'number'}];
+        }else if(nodeType ==='constant'){
+            node.outputs=[{name:'constant',type:'number'}];
+            node.data.constant =0;
         }
         $scope.nodes.push(node);
     };

@@ -14,8 +14,7 @@ function AverageNode(id){
 }
 
 util.inherits(AverageTransform,stream.Transform);
-function AverageTransform(id){
-    this.id =id;
+function AverageTransform(){
     stream.Transform.call(this,{objectMode:true});
     this.average = 0;
     //get count form Cache

@@ -13,8 +13,8 @@ function CountNode(id){
     this.transform.pipe(this.demux);
 }
 util.inherits(CountTransform,stream.Transform);
-function CountTransform(id){
-    this.id =id;
+function CountTransform(){
+
     stream.Transform.call(this,{objectMode:true});
     this.count =0; //get count form Cache
 }
