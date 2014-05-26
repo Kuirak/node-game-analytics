@@ -11,5 +11,6 @@ module.exports={
     min:'min',
     average:'average',
     equals:'equals',
-    constant:'constant'
+    constant:'constant',
+    countNotChanging:'countNotChanging'
 };

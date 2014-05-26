@@ -10,6 +10,7 @@ var NodeType =require('./NodeType')
     ,ValueOutputNode =require('./ValueOutputNode')
     ,InputNode =require('./InputNode')
     ,ConstantNode =require('./ConstantNode')
+    ,CountNotChangingNode =require('./CountNotChangingNode')
     ,EqualsNode =require('./EqualsNode');
 
 function create(node){
@@ -29,6 +30,8 @@ function create(node){
         return new EqualsNode(node.id);
     }else if(node.data.nodeType ===NodeType.constant){
         return new ConstantNode(node.id,node.data.constant);
+    }else if(node.data.nodeType ===NodeType.countNotChanging){
+        return new CountNotChangingNode(node.id);
     }
 
 }
