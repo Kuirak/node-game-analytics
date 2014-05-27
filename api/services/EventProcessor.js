@@ -7,6 +7,7 @@ var stream = require('stream')
     ,Q=require('q')
     ,Node =require('../lib/Node')
     ,Input =require('../lib/Node/InputNode')
+    ,ConstantNode =require('../lib/Node/InputNode')
     ,Transformations =require('../lib/Transformations');
 var isRunning =false;
 var runningSystems =[];
@@ -82,8 +83,9 @@ function setupNodeSystem(system){
         _.each(system.connections,function(conn){
             var source = _.find(nodes,{id:conn.source.node_id});
             var target = _.find(nodes,{id:conn.target.node_id});
-            var output =source.outputs[conn.source.output];
-            target.attachInput(conn.target.input,output);
+            var output = source.outputs[conn.source.output];
+            target.attachInput(conn.target.input, output);
+
 
         });
 

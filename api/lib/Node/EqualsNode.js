@@ -23,7 +23,13 @@ function EqualsTransform(){
 
 EqualsTransform.prototype._transform = function(chunk,enc,next){
     if(chunk){
-        var value = chunk.first;
+        var value =null;
+        if(chunk.first.session_id){
+           value= chunk.first;
+        }else{
+            value =chunk.second;
+        }
+
         if(chunk.first.data=== chunk.second.data){
             value.name='true';
             this.push([value]);

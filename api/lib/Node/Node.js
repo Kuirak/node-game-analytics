@@ -32,6 +32,7 @@ function Node(id,options){
         self.demux = new Demux(self.outputs);
         self.transform.pipe(self.demux);
         _.each(options.outputs,function(output){
+            if(self.outputs[output.name])return;
             self.outputs[output.name] = new stream.PassThrough({objectMode:true});
         });
     }
@@ -45,25 +46,44 @@ Node.prototype.attachInput =function(inputname,previousNodeOutputStream){
     self.sources[inputname]=previousNodeOutputStream;
 };
 
+
+
 /**
  *
  */
 Node.prototype.setupInputs =function(){
     var data={};
     var self =this;
-    _.forIn(self.sources,function(stream,name){
-        stream.on('data',function(chunk){
-            stream.pause();
-            chunk.name =name; //changes name to input name
+    var constant={};
+
+    function checkIfAllData() {
+        if (_.size(data) === _.size(self.sources)) {
+            self.transform.write(data);
+            data = {};
+            _.each(self.sources, function (input) {
+                if (input instanceof stream.Readable) {
+                    input.resume();
+                } else {
+                    data = _.clone(constant);
+
+                }
+            })
+        }
+    }
+
+    _.forIn(self.sources,function(input,name){
+        if(!(input instanceof stream.Readable)){
+            constant[name]={name:name,data:input};
+            data = _.assign(data,constant);
+            checkIfAllData();
+        }else{
+        input.on('data',function(chunk){
+            input.pause();
+            chunk.name =name;
             data[name]=chunk;
-            if(_.size(data) === _.size(self.sources)){
-                self.transform.write(data);
-                data={};
-                _.each(self.sources,function(stream){
-                    stream.resume();
-                })
-            }
+            checkIfAllData();
         })
+        }
     });
 };
 
