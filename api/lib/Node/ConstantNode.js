@@ -21,7 +21,9 @@ function ConstantStream(constant){
 }
 
 ConstantStream.prototype._read = function(){
-    this.push(this.constant);
+    value.name ='constant';
+    value.data =this.constant;
+    this.push([value]);
 };
 
 module.exports =ConstantNode;
