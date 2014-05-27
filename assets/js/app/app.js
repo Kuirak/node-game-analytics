@@ -12,7 +12,8 @@ app.config(function($stateProvider,$locationProvider){
         templateUrl:'/partials/home.html'
     }).state("dashboard",{
         url:'/dashboard',
-        templateUrl:'/partials/dashboard.html'
+        templateUrl:'/partials/dashboard.html',
+        controller:'DashboardController'
     }).state('editor',{
         url:'/editor',
         templateUrl:'/partials/editor.html',

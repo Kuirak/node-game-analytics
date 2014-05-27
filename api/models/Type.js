@@ -7,7 +7,6 @@
  */
 
 module.exports = {
-
 	attributes: {
         name:{type:'string',required:true},
         params:'json',

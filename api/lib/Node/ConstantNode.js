@@ -21,6 +21,7 @@ function ConstantStream(constant){
 }
 
 ConstantStream.prototype._read = function(){
+    var value ={};
     value.name ='constant';
     value.data =this.constant;
     this.push([value]);

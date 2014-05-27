@@ -14,6 +14,8 @@
             <div ng-transclude></div>
             <div class="well" >
                     <select id="key" class="form-control"
+                            ng-if="node.data.nodeType !=='input'"
+                            ng-hide="node.data.nodeType === 'valueOutput'"
                             ng-init="node.data.key = node.data.key || keys[0]"
                             not-node-draggable
                             ng-model="node.data.key"
@@ -31,6 +33,10 @@
                        type="number"
                        not-node-draggable
                        ng-model="node.data.constant"/>
+                <input type="text"
+                       not-node-draggable
+                       ng-if="node.data.nodeType ==='valueOutput'"
+                       ng-model="node.data.outputType"/>
             </div>
             <node-inputs></node-inputs>
             <node-outputs></node-outputs>

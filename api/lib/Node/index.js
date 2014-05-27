@@ -23,7 +23,7 @@ function create(node){
     }else if(node.data.nodeType === NodeType.average){
         return new AverageNode(node.id);
     }else if(node.data.nodeType === NodeType.valueOutput){
-        return new ValueOutputNode(node.id);
+        return new ValueOutputNode(node.id,node.data.outputType);
     }else if(node.data.nodeType ===NodeType.input){
         return new InputNode(node.id,node.data.eventType);
     }else if(node.data.nodeType ===NodeType.equals){

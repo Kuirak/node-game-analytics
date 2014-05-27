@@ -28,7 +28,7 @@ function Node(id,options){
     self.inputs =options.inputs;
     self.sources ={};
     self.transform = options.transform || new stream.PassThrough({objectMode:true});
-    if(options.outputs || options.outputs.length >0){
+    if(options.outputs){
         self.demux = new Demux(self.outputs);
         self.transform.pipe(self.demux);
         _.each(options.outputs,function(output){
@@ -37,12 +37,12 @@ function Node(id,options){
     }
 }
 
-Node.prototype.attachInput =function(inputname,readable){
+Node.prototype.attachInput =function(inputname,previousNodeOutputStream){
     var self =this;
     if(!_.some(self.inputs,{name:inputname})){
         throw new Error("This input doesn't exist " +name);
     }
-    self.sources[inputname]=readable;
+    self.sources[inputname]=previousNodeOutputStream;
 };
 
 /**

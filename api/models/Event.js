@@ -7,7 +7,7 @@
 */
 
 module.exports = {
-
+  autoWatch:true,
   attributes: {
     type:{type:'string',required:true,notNull:true},
     params:{type:'json'},

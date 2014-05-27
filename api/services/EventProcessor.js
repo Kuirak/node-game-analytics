@@ -48,13 +48,14 @@ function init(){
 }
 
 function setupNodeSystem(system){
+    sails.log.verbose("Setting up System: "+system.name);
     var nodeSystem ={name:system.name,input:{},dbSource:system};
     var nodes= _.map(system.nodes,function(node){
             return Node.create(node);
     });
     nodeSystem.nodes =nodes;
     //filter Input and sort for eventType;
-    var promises= _.chain(nodes)
+    _.chain(nodes)
         .select(function(node){return node instanceof Input;})
         .each(function(node){
             if(!nodeSystem.input[node.eventType]){
@@ -66,12 +67,18 @@ function setupNodeSystem(system){
             inputs[node.eventType].push(node);
             nodeSystem.input[node.eventType].push(node);
             //TODO maybe add system/event stream
-        }).map(function(input){ //init input returns promise
-            return input.init();
-        }).value();
-
+        });
+    sails.log.verbose("Setting up Nodes: "+system.name);
+   var promises= _.chain(nodes).select(function(node){
+        return node.init ? true:false;
+   }).map(function(node){ //init returns promise
+            return node.init();
+   }).value();
+    sails.log.verbose("Started Init for Nodes: "+system.name);
     //wait for all inits to be done
     Q.all(promises).then(function(){
+        sails.log.verbose("Finished Init Nodes: "+system.name);
+        sails.log.verbose("Attaching Connections: "+system.name);
         _.each(system.connections,function(conn){
             var source = _.find(nodes,{id:conn.source.node_id});
             var target = _.find(nodes,{id:conn.target.node_id});
@@ -79,10 +86,13 @@ function setupNodeSystem(system){
             target.attachInput(conn.target.input,output);
 
         });
+
         _.each(nodes,function(node){
             if(!node.setupInputs)return;
             node.setupInputs();
         });
+        sails.log.verbose("Attached Connections: "+system.name);
+        sails.log.verbose("Starting Event Streams: "+system.name);
         _.forIn(nodeSystem.input,function(value,key){
             _.each(value,function(input){
                 Event.stream({type:key},Transformations.none).pipe(input,{end:false});
