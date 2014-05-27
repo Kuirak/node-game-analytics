@@ -8,9 +8,12 @@ var Node = require('./Node')
 
 util.inherits(MinNode,Node);
 function MinNode(id){
-    Node.call(this,id,{inputs:[{name:'value',type:'number'}],outputs:[{name:'min',type:'number'}]});
-    this.transform = new MinTransform();
-    this.transform.pipe(this.demux);
+    Node.call(this,id,{
+        inputs:[{name:'value',type:'number'}],
+        outputs:[{name:'min',type:'number'}],
+        transform: new MinTransform()
+    });
+
 }
 
 util.inherits(MinTransform,stream.Transform);

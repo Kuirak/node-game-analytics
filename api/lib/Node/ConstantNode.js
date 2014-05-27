@@ -8,10 +8,12 @@ var Node = require('./Node')
 
 util.inherits(ConstantNode,Node);
 function ConstantNode(id,constant){
-    Node.call(this,id,{outputs:[{name:'constant',type:'number'}]});
-    this.transform = new ConstantStream(constant);
-    this.transform.pipe(this.demux);
+    Node.call(this,id,{
+        outputs:[{name:'constant',type:'number'}],
+        transform: new ConstantStream(constant)
+    });
 }
+
 util.inherits(ConstantStream,stream.Readable);
 function ConstantStream(constant){
     stream.Readable.call(this,{objectMode:true});

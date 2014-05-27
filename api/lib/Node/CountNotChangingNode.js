@@ -8,9 +8,10 @@ var Node = require('./Node')
 
 util.inherits(CountNotChangingNode,Node);
 function CountNotChangingNode(id){
-    Node.call(this,id,{inputs:[{name:'value',type:'number'},{name:'threshold',type:'number'}],outputs:[{name:'count',type:'number'}]});
-    this.transform = new CountNotChangingTransform();
-    this.transform.pipe(this.demux);
+    Node.call(this,id,{inputs:[{name:'value',type:'number'},{name:'threshold',type:'number'}],
+        outputs:[{name:'count',type:'number'}],
+        transform : new CountNotChangingTransform()
+    });
 }
 
 util.inherits(CountNotChangingTransform,stream.Transform);

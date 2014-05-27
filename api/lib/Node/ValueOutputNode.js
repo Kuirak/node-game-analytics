@@ -8,8 +8,11 @@ var Node = require('./Node')
 
 util.inherits(OutputNode,Node);
 function OutputNode(id){
-    Node.call(this,id,{inputs:[{name:'value',type:'number'}]});
-    this.transform = new ConsoleStream();
+    Node.call(this,id,{
+        inputs:[{name:'value',type:'number'}],
+        transform: new ConsoleStream()
+    });
+
 }
 
 util.inherits(ConsoleStream,stream.Writable);

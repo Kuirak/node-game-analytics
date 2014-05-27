@@ -27,12 +27,14 @@ function Node(id,options){
     self.outputs ={};
     self.inputs =options.inputs;
     self.sources ={};
-    _.each(options.outputs,function(output){
-        //use
-        self.outputs[output.name] = new stream.PassThrough({objectMode:true});
-    });
-    self.demux = new Demux(self.outputs);
-
+    self.transform = options.transform || new stream.PassThrough({objectMode:true});
+    if(options.outputs || options.outputs.length >0){
+        self.demux = new Demux(self.outputs);
+        self.transform.pipe(self.demux);
+        _.each(options.outputs,function(output){
+            self.outputs[output.name] = new stream.PassThrough({objectMode:true});
+        });
+    }
 }
 
 Node.prototype.attachInput =function(inputname,readable){

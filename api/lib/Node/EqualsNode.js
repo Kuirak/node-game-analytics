@@ -8,10 +8,14 @@ var Node = require('./Node')
 
 util.inherits(EqualsNode,Node);
 function EqualsNode(id){
-    Node.call(this,id,{inputs:[{name:'first',type:'number'},{name:'second',type:'number'}],outputs:[{name:'true',type:'number'},{name:'false',type:'number'}]});
-    this.transform = new EqualsTransform();
-    this.transform.pipe(this.demux);
+    Node.call(this,id,{
+        inputs:[{name:'first',type:'number'},{name:'second',type:'number'}],
+        outputs:[{name:'true',type:'number'},{name:'false',type:'number'}],
+        transform: new EqualsTransform()
+    });
 }
+
+
 util.inherits(EqualsTransform,stream.Transform);
 function EqualsTransform(){
     stream.Transform.call(this,{objectMode:true});

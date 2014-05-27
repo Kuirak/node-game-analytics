@@ -8,9 +8,11 @@ var Node = require('./Node')
 
 util.inherits(AverageNode,Node);
 function AverageNode(id){
-    Node.call(this,id,{inputs:[{name:'value',type:'number'}],outputs:[{name:'average',type:'number'}]});
-    this.transform = new AverageTransform();
-    this.transform.pipe(this.demux);
+    Node.call(this,id,{
+        inputs:[{name:'value',type:'number'}],
+        outputs:[{name:'average',type:'number'}],
+        transform: new AverageTransform()
+    });
 }
 
 util.inherits(AverageTransform,stream.Transform);

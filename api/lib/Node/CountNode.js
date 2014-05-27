@@ -8,9 +8,11 @@ var Node = require('./Node')
 
 util.inherits(CountNode,Node);
 function CountNode(id){
-    Node.call(this,id,{inputs:[{name:'value',type:'number'}],outputs:[{name:'count',type:'number'}]});
-    this.transform = new CountTransform();
-    this.transform.pipe(this.demux);
+    Node.call(this,id,{
+        inputs:[{name:'value',type:'number'}],
+        outputs:[{name:'count',type:'number'}],
+        transform: new CountTransform()
+    });
 }
 util.inherits(CountTransform,stream.Transform);
 function CountTransform(){

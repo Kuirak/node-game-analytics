@@ -8,9 +8,11 @@ var Node = require('./Node')
 
 util.inherits(MaxNode,Node);
 function MaxNode(id){
-    Node.call(this,id,{inputs:[{name:'value',type:'number'}],outputs:[{name:'max',type:'number'}]});
-    this.transform = new MaxTransform();
-    this.transform.pipe(this.demux);
+    Node.call(this,id,{
+        inputs:[{name:'value',type:'number'}],
+        outputs:[{name:'max',type:'number'}],
+        transform: new MaxTransform()
+    });
 }
 
 util.inherits(MaxTransform,stream.Transform);
