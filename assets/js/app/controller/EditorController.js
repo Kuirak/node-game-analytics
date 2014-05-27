@@ -5,6 +5,7 @@
 app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventTypes,$state,$rootScope){
     $scope.nodeSystem =nodeSystem.data;
     $scope.nodeTypes= ['input','count','valueOutput','max','min','average','equals','constant','countNotChanging'];
+
     var connections =$scope.nodeSystem.connections;
     $scope.selectedNode =null;
     $scope.connecting=false;
@@ -46,7 +47,8 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
             y:0,
             id: id,
             data:{
-                nodeType:nodeType
+                nodeType:nodeType,
+                key:'global'
             }
         };
         if(nodeType ==='input'){

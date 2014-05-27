@@ -36,8 +36,8 @@ app.directive("node",function(){
                 }
                 $scope.$parent.connections.push(connection);
             };
-
             $scope.eventTypes =$scope.$parent.eventTypes;
+            $scope.keys =['global','session','user'];
             $scope.$watch('node.data.eventType',function(newValue,oldValue){
                 if(newValue === oldValue){
                     return;

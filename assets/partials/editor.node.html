@@ -12,11 +12,25 @@
         </div>
         <div class="panel-body">
             <div ng-transclude></div>
-            <div class="well" ng-if="node.data.nodeType ==='input'">
-                <select not-node-draggable ng-model="node.data.eventType" ng-options="e.name as e.name for e in eventTypes"></select>
-            </div>
-            <div class="well" ng-if="node.data.nodeType ==='constant'">
-                <input type="number" not-node-draggable ng-model="node.data.constant"/>
+            <div class="well" >
+                    <select id="key" class="form-control"
+                            ng-init="node.data.key = node.data.key || keys[0]"
+                            not-node-draggable
+                            ng-model="node.data.key"
+                            ng-options="k for k in keys">
+                </select>
+                <select class="form-control"
+                        ng-if="node.data.nodeType ==='input'"
+                        not-node-draggable
+                        ng-model="node.data.eventType"
+                        ng-options="e.name as e.name for e in eventTypes">
+
+                </select>
+                <input class="form-control"
+                       ng-if="node.data.nodeType ==='constant'"
+                       type="number"
+                       not-node-draggable
+                       ng-model="node.data.constant"/>
             </div>
             <node-inputs></node-inputs>
             <node-outputs></node-outputs>
