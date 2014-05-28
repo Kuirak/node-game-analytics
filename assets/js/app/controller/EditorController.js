@@ -39,6 +39,11 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
             $rootScope.$emit('editor.nodesystem.delete',{id:data.id});
         })
     };
+    $scope.start = function () {
+        $sailsSocket.get('/api/nodesystem/'+$scope.nodeSystem.id+'/start').success(function(){
+            console.log('Running');
+        })
+    };
 
     $scope.createNode=function(nodeType){
         var id =_.max($scope.nodes,'id').id +1 || 1;

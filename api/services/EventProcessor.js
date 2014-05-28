@@ -35,9 +35,13 @@ module.exports={
       //setup system
       init();
       isRunning =true;
-  },nodeSystemCreated: function(nodeSystem){
+  },startNodeSystem: function(nodeSystem) {
+        if(_.some(runningSystems,{name:nodeSystem.name})){
+            //TODO  stop and restart
+            return;
+        }
         runningSystems.push(setupNodeSystem(nodeSystem));
-    }
+  }
 
 };
 

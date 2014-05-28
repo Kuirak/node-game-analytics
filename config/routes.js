@@ -31,7 +31,8 @@ module.exports.routes = {
     view: 'home/index',
     skipAssets: true,
     skipRegex:[/\/api.*/]
-  }
+  },
+    'get /api/nodesystem/:id/start':'NodesystemController.startNodeSystem'
 //  '/dashboard':{
 //        view:'home/index'
 //  }

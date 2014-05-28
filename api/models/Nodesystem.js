@@ -13,5 +13,4 @@ module.exports = {
         connections:'json',
         game:{model:'game'}
 	}
-
 };
