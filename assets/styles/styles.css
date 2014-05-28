@@ -1,6 +1,13 @@
 .circle {
     border-radius: 50%;
 }
+
+.node-form{
+    font-size:0.8em;
+    height:2em;
+    padding: 0
+}
+
 .node-circle{
     width: 1.2em;
     height: 1.2em;

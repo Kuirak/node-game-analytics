@@ -48,6 +48,7 @@ OutputStream.prototype._write =function(chunk,enc,next){
     params[event.name] =event.data;
     event.params =params;
     event.type =this.outputType;
+    event.internal =true;
     delete event.name;
     delete event.data;
     Event.create(event).then(Event.publishCreate).fail(sails.log.error);
