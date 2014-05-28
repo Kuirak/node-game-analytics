@@ -2,8 +2,8 @@
     border-radius: 50%;
 }
 .node-circle{
-    width: 2em;
-    height: 2em;
+    width: 1.2em;
+    height: 1.2em;
     display: inline-block;
     vertical-align: middle;
     margin: 0.1em;

@@ -10,7 +10,6 @@ app.directive('nodeDraggable',['$document',function($document){
         element.css({
             position:'absolute',
             cursor:'move',
-            width:'20em',
             left:x+'px',
             top:y+'px'
         });

@@ -1,18 +1,15 @@
-<div >
+<div style="width:12em;" >
     <div class="panel panel-default">
-        <div class="panel-heading">
-            <button ng-click="removeNode(node.id)" class="pull-right btn-sm btn-danger">
+        <div class="panel-heading" style="padding-top: 0;padding-right: 0;padding-bottom: 0">
+            <button ng-click="removeNode(node.id)" class="pull-right btn btn-sm btn-danger" style="margin:0; padding:0.5em" >
                 <span class="glyphicon glyphicon-remove"></span>
             </button>
-            <h3 class="panel-title">ID {{node.id}} - {{node.data.nodeType}} </h3>
+            <p style="padding-top: 0.3em;margin:0">{{node.id}} - {{node.data.nodeType | titlecase}} </p>
             <div class="clearfix">
-                
             </div>
 
         </div>
         <div class="panel-body">
-            <div ng-transclude></div>
-            <div class="well" >
                     <select id="key" class="form-control"
                             ng-if="node.data.nodeType !=='input'"
                             ng-hide="node.data.nodeType === 'valueOutput'"
@@ -34,10 +31,11 @@
                        not-node-draggable
                        ng-model="node.data.constant"/>
                 <input type="text"
+                       class="form-control"
                        not-node-draggable
                        ng-if="node.data.nodeType ==='valueOutput'"
                        ng-model="node.data.outputType"/>
-            </div>
+
             <node-inputs></node-inputs>
             <node-outputs></node-outputs>
 
