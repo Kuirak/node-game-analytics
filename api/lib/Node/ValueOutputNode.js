@@ -51,7 +51,14 @@ OutputStream.prototype._write =function(chunk,enc,next){
     event.type =this.outputType;
     delete event.name;
     delete event.data;
-    Event.create(event).then(Event.publishCreate).fail(sails.log.error);
+    Event.findOne({type:event.type,session_id:event.session_id,timestamp:event.timestamp}).then(function(data){
+        if(data){
+            data.params =event.params;
+            return Q.ninvoke(data,'save')
+        }else{
+          return Event.create(event).then(Event.publishCreate);
+        }
+    }).fail(sails.log.error);
     next();
 };
 module.exports =OutputNode;
