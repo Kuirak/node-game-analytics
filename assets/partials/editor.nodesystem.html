@@ -19,12 +19,16 @@
         </div>
         <div class="panel-body">
             <div ng-repeat="connection in connections">
-                <p>ID {{connection.source.node.id}} {{connection.source.output.name}} <span
+                <small>ID {{connection.source.node.id}} {{connection.source.output.name}} <span
                         class="glyphicon glyphicon-chevron-right"></span> ID
                     {{connection.target.node.id}} {{connection.target.input.name}}
-                    <a ng-click="unconnect(connection)" class="btn btn-sm btn-warning"><span
+                    <a ng-click="unconnect(connection)" class="btn btn-sm btn-warning pull-right" style="padding: 0.2em 0.2em 0 0.2em; "><span
                             class="glyphicon glyphicon-trash"></span></a>
-                </p>
+                </small>
+                <hr style="margin:0.1em; padding:0"/>
+                <div class="clearfix">
+
+                </div>
             </div>
         </div>
     </div>

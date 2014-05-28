@@ -1,7 +1,7 @@
 'use strict';
 /**
  * Created by Jonas Kugelmann on 11.04.2014.
- * Ref: http://stackoverflow.com/questions/20393855/angularjs-draggable-directive
+ * BasedOn: http://stackoverflow.com/questions/20393855/angularjs-draggable-directive
  */
 app.directive('nodeDraggable',['$document',function($document){
     return {link:function(scope,element,attr){

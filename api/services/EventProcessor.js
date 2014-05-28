@@ -85,8 +85,6 @@ function setupNodeSystem(system){
             var target = _.find(nodes,{id:conn.target.node_id});
             var output = source.outputs[conn.source.output];
             target.attachInput(conn.target.input, output);
-
-
         });
 
         _.each(nodes,function(node){
