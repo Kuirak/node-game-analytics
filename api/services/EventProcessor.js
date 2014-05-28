@@ -95,7 +95,11 @@ function setupNodeSystem(system){
         sails.log.verbose("Starting Event Streams: "+system.name);
         _.forIn(nodeSystem.input,function(value,key){
             _.each(value,function(input){
-                Event.stream({type:key},Transformations.none).pipe(input,{end:false});
+               var eventStream= Event.stream({type:key},Transformations.none);
+                eventStream.on('end',function(){
+                    //Start new stream with rest of data
+                });
+                eventStream.pipe(input,{end:false});
             });
 
         })

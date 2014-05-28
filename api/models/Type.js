@@ -10,7 +10,8 @@ module.exports = {
 	attributes: {
         name:{type:'string',required:true},
         params:'json',
-        game:{model:'game'}
+        game:{model:'game'},
+        internal:{type:'boolean',defaultsTo:false}
 	}
 
 };

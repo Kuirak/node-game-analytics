@@ -21,7 +21,8 @@ OutputNode.prototype.init =function(){
 var deferred = Q.defer();
 var type ={
      name:this.outputType,
-     params:[{name:'value',type:'number'}]
+     params:[{name:'value',type:'number'}],
+     internal:true
 };
 Type.findOne({name:this.outputType}).then(function(data){
      if(data){
@@ -48,7 +49,6 @@ OutputStream.prototype._write =function(chunk,enc,next){
     params[event.name] =event.data;
     event.params =params;
     event.type =this.outputType;
-    event.internal =true;
     delete event.name;
     delete event.data;
     Event.create(event).then(Event.publishCreate).fail(sails.log.error);

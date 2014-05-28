@@ -14,8 +14,7 @@ module.exports = {
     session_id:{type:'string',required:true,uuidv4:true},
     user_id:{type:'string',required:true,uuidv4:true},
     timestamp:{type:'string'},
-    game:{model:'game'},
-    internal:{type:'boolean',defaultsTo:false}
+    game:{model:'game'}
   },beforeCreate:function(values,done){
         //TODO move to policy
         Type.findOne({name:values.type}).then(function(type){
