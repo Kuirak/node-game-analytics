@@ -13,6 +13,7 @@ module.exports = {
     params:{type:'json'},
     session_id:{type:'string',required:true,uuidv4:true},
     user_id:{type:'string',required:true,uuidv4:true},
+   //TODO source_id:{type:'integer'},
     timestamp:{type:'string'},
     game:{model:'game'}
   },beforeCreate:function(values,done){

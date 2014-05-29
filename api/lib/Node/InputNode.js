@@ -38,14 +38,18 @@ Input.prototype._write = function(chunk,enc,next){
     if(!chunk){next();return;}
     var self =this;
 
-    self.outputs.timestamp.write({data:chunk.timestamp,
+    //Splitting up the params
+    self.outputs.timestamp.write(
+        {data:chunk.timestamp,
         session_id:chunk.session_id,
         user_id:chunk.user_id,
         name:'timestamp',
         timestamp:chunk.timestamp
     });
+
     _.forIn(chunk.params,function(data,name){
-        self.outputs[name].write({name:name,
+        self.outputs[name].write({
+            name:name,
             data:data,
             session_id:chunk.session_id,
             user_id:chunk.user_id,

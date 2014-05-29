@@ -11,14 +11,14 @@
         </div>
         <div class="panel-body">
             <div style="margin-bottom: 0.3em">
-                <select id="key" class="form-control node-form"
-                          ng-if="node.data.nodeType !=='input'"
-                          ng-hide="node.data.nodeType === 'valueOutput'"
-                          ng-init="node.data.key = node.data.key || keys[0]"
-                          not-node-draggable
-                          ng-model="node.data.key"
-                          ng-options="k for k in keys">
-            </select>
+                <!--<select id="key" class="form-control node-form"-->
+                          <!--ng-if="node.data.nodeType !=='input'"-->
+                          <!--ng-hide="node.data.nodeType === 'valueOutput'"-->
+                          <!--ng-init="node.data.key = node.data.key || keys[0]"-->
+                          <!--not-node-draggable-->
+                          <!--ng-model="node.data.key"-->
+                          <!--ng-options="k for k in keys">-->
+            <!--</select>-->
                 <select class="form-control node-form"
                         ng-if="node.data.nodeType ==='input'"
                         not-node-draggable
