@@ -9,33 +9,15 @@ app.directive("node",function(){
         transclude:true,
         templateUrl:"/partials/editor.node.html",
         scope:{node:'='},
-        controller: function($scope){
+        controller: function($scope,$rootScope){
             $scope.removeNode=function(id){
-                _.remove($scope.$parent.nodes,{id:id});
-                _.remove($scope.$parent.connections,function(conn){
-                    return conn.source.node.id === id || conn.target.node.id ===id;
-                })
+                $rootScope.$emit('node.removed',{id:id});
             };
+
             $scope.connect = function(event,source,target){
-                console.log(source,target);
-                var connection= {source:source,target:target};
-                if(source.node.id === target.node.id){
-                    return;
-                }
-                //connection exits
-                if(_.find($scope.$parent.connections,connection)){
-                    return;
-                }
-                //Connection with same source exists
-//                if(_.find($scope.$parent.connections,{source:source})){
-//                    return;
-//                }
-                //connection with same target exists
-                if(_.find($scope.$parent.connections,{target:target})){
-                    return;
-                }
-                $scope.$parent.connections.push(connection);
+                $rootScope.$emit('node.connected',{source:source,target:target});
             };
+
             $scope.eventTypes =$scope.$parent.eventTypes;
             $scope.keys =['global','session','user'];
             $scope.$watch('node.data.eventType',function(newValue,oldValue){
@@ -54,6 +36,7 @@ app.directive("node",function(){
 
                }
             });
+
 
         },
         link: function(scope,el,attr){

@@ -3,7 +3,7 @@
  * Created by Jonas Kugelmann on 11.04.2014.
  * BasedOn: http://stackoverflow.com/questions/20393855/angularjs-draggable-directive
  */
-app.directive('nodeDraggable',['$document',function($document){
+app.directive('nodeDraggable',['$document','$rootScope',function($document,$rootScope){
     return {link:function(scope,element,attr){
         // to prevent  dragging  drag n drop items ad node-draggable directive and it negates the effect
         var startX = 0,startY = 0,x= scope.node.x,y=scope.node.y;
@@ -25,6 +25,9 @@ app.directive('nodeDraggable',['$document',function($document){
         function mousemove(event){
             x= event.pageX -startX;
             y= event.pageY -startY;
+            scope.node.x=x;
+            scope.node.y=y;
+            $rootScope.$emit('node.position.changed');
             element.css({
                 left:x+'px',
                 top:y+'px'
@@ -33,8 +36,8 @@ app.directive('nodeDraggable',['$document',function($document){
         function mouseup(){
             $document.unbind('mousemove',mousemove);
             $document.unbind('mouseup',mouseup);
-            scope.node.x=x;
-            scope.node.y=y;
+
+
         }
     }}
 }]);

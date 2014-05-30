@@ -13,5 +13,4 @@ module.exports = {
         game:{model:'game'},
         internal:{type:'boolean',defaultsTo:false}
 	}
-
 };

@@ -40,8 +40,11 @@ function Node(id,options){
 
 Node.prototype.attachInput =function(inputname,previousNodeOutputStream){
     var self =this;
+    if(typeof previousNodeOutputStream ===  'undefined'){
+        throw new Error("Stream doesn't exist " +inputname)
+    }
     if(!_.some(self.inputs,{name:inputname})){
-        throw new Error("This input doesn't exist " +name);
+        throw new Error("This input doesn't exist " +inputname);
     }
     self.sources[inputname]=previousNodeOutputStream;
 };
@@ -78,6 +81,9 @@ Node.prototype.setupInputs =function(){
             checkIfAllData();
         }else{
         input.on('data',function(chunk){
+            if(!chunk.data){
+                return;
+            }
             input.pause();
             chunk.name =name;
             data[name]=chunk;

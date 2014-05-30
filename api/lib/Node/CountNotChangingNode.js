@@ -24,15 +24,16 @@ function CountNotChangingTransform(){
 
 CountNotChangingTransform.prototype._transform = function(chunk,enc,next){
     if(chunk){
+        chunk.value.data = parseInt(chunk.value.data);
         if(this.first){
             this.count +=1;
-            this.previous =chunk.value;
+            this.previous =chunk.value.data;
             this.first =false;
             next();
             return;
         }
         var value =chunk.value;
-        if(this.previous < value.data+chunk.threshold && this.previous > value.data-chunk.threshold){
+        if(this.previous <= value.data+chunk.threshold.data && this.previous >= value.data-chunk.threshold.data){
             this.count +=1;
             next();
         }else{

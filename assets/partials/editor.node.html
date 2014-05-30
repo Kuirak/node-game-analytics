@@ -1,10 +1,10 @@
 <div style="width:12em;" >
     <div class="panel panel-default">
-        <div class="panel-heading" style="padding-top: 0;padding-right: 0;padding-bottom: 0; background-color: #d8d8d8">
+        <div class="panel-heading" style="max-height: 34px; padding-top: 0;padding-right: 0;padding-bottom: 0; background-color: #d8d8d8">
             <button ng-click="removeNode(node.id)" class="pull-right btn btn-sm btn-danger" style="margin:0; padding:0.5em" >
                 <span class="glyphicon glyphicon-remove"></span>
             </button>
-            <p style="padding-top: 0.3em;margin:0">{{node.id}} - {{node.data.nodeType | titlecase}} </p>
+            <p style="text-overflow: ellipsis;overflow: hidden; white-space: nowrap; padding-top: 0.3em;margin:0">{{node.id}} - {{node.data.nodeType | titlecase}} </p>
             <div class="clearfix">
             </div>
 

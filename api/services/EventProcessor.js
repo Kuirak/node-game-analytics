@@ -88,7 +88,7 @@ function setupNodeSystem(system){
         _.forIn(nodeSystem.input,function(value,key){
             _.each(value,function(input){
                var eventStream= Event.stream({type:key},Transformations.none);
-                eventStream.on('end',function(){
+                eventStream.on('end',function(data){
                     //Start new stream with rest of data
                     sails.log.verbose("Ended Event Stream: "+key);
                 });
