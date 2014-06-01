@@ -1,6 +1,35 @@
 .circle {
     border-radius: 50%;
 }
+.node {
+    width:12em;
+}
+
+.node .panel .panel-heading {
+    max-height: 34px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    background-color: #d8d8d8;
+}
+.node .panel .panel-heading p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-top: 0.3em;
+    margin:0
+}
+
+.node .panel .panel-heading button {
+    margin:0;
+    padding:0.5em
+}
+
+.node .output {
+    margin-right: -1.7em
+}
+
+
 
 .node-form{
     font-size:0.8em;

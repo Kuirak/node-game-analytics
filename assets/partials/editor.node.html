@@ -1,46 +1,17 @@
-<div style="width:12em;" >
+<div class="node" >
     <div class="panel panel-default">
-        <div class="panel-heading" style="max-height: 34px; padding-top: 0;padding-right: 0;padding-bottom: 0; background-color: #d8d8d8">
-            <button ng-click="removeNode(node.id)" class="pull-right btn btn-sm btn-danger" style="margin:0; padding:0.5em" >
+        <div class="panel-heading" >
+            <button ng-click="removeNode(node.id)"
+                    class="pull-right btn btn-sm btn-danger" >
                 <span class="glyphicon glyphicon-remove"></span>
             </button>
-            <p style="text-overflow: ellipsis;overflow: hidden; white-space: nowrap; padding-top: 0.3em;margin:0">{{node.id}} - {{node.data.nodeType | titlecase}} </p>
-            <div class="clearfix">
-            </div>
-
+            <p style="">{{node.id}} - {{node.data.nodeType | titlecase}} </p>
+            <div class="clearfix"></div>
         </div>
         <div class="panel-body">
-            <div style="margin-bottom: 0.3em">
-                <!--<select id="key" class="form-control node-form"-->
-                          <!--ng-if="node.data.nodeType !=='input'"-->
-                          <!--ng-hide="node.data.nodeType === 'valueOutput'"-->
-                          <!--ng-init="node.data.key = node.data.key || keys[0]"-->
-                          <!--not-node-draggable-->
-                          <!--ng-model="node.data.key"-->
-                          <!--ng-options="k for k in keys">-->
-            <!--</select>-->
-                <select class="form-control node-form"
-                        ng-if="node.data.nodeType ==='input'"
-                        not-node-draggable
-                        ng-model="node.data.eventType"
-                        ng-options="e.name as e.name for e in eventTypes ">
-
-                </select>
-                <input class="form-control node-form"
-                       ng-if="node.data.nodeType ==='constant'"
-                       type="number"
-                       not-node-draggable
-                       ng-model="node.data.constant"/>
-                <input type="text"
-                       class="form-control node-form"
-                       not-node-draggable
-                       ng-if="node.data.nodeType ==='valueOutput'"
-                       ng-model="node.data.outputType"/>
-            </div>
-
+            <node-settings></node-settings>
             <node-inputs></node-inputs>
             <node-outputs></node-outputs>
-
         </div>
     </div>
 </div>

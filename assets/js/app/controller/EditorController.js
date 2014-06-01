@@ -2,11 +2,10 @@
 /**
  * Created by Jonas Kugelmann on 11.04.2014.
  */
-app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventTypes,$state,$rootScope){
+app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventTypes,$state,$rootScope,NodeType){
     $scope.nodeSystem =nodeSystem.data;
-    $scope.nodeTypes= ['input','count','valueOutput','max','min','average','equals','constant','countNotChanging'];
 
-    var connections =$scope.nodeSystem.connections;
+    $scope.nodeTypes= NodeType;
     $scope.selectedNode =null;
     $scope.connecting=false;
     $scope.connections =null;
@@ -16,14 +15,15 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
     $rootScope.$on('node.removed',function(event,args){
         _.remove($scope.nodes,{id:args.id});
         _.remove($scope.connections,function(conn){
-            return conn.source.node.id === id || conn.target.node.id ===id;
+            return conn.source.node.id === args.id || conn.target.node.id ===args.id;
         })
     });
+
+
     $rootScope.$on('node.connected',function(event,connection){
         if(connection.source.node_id === connection.target.node_id){
             return;
         }
-
        var source = _.find($scope.nodes,{id:connection.source.node_id});
        var target = _.find($scope.nodes,{id:connection.target.node_id});
         var output = _.find(source.outputs,{name: connection.source.outputname});
@@ -46,10 +46,18 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
     });
 
 
+    $rootScope.$on('node.position.changed',function(){
+        _.each($scope.connections,function(conn){
+            $scope.$apply(function(){
+                conn.target.pos =$scope.calculateTargetPos(conn.target.node,conn.target.input.name,conn.target.pos);
+                conn.source.pos =$scope.calculateSourcePos(conn.source.node,conn.source.output.name,conn.source.pos);
+            });
+        });
+    });
+
 
     $scope.unconnect =function(connection){
         _.remove($scope.connections,connection);
-
     };
 
     $scope.save = function(){
@@ -65,17 +73,22 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
             console.log("Saved ",data);
         })
     };
+
+
     $scope.remove = function () {
         $sailsSocket.delete('/api/nodesystem/'+$scope.nodeSystem.id).success(function(data){
             $state.go('editor');
             $rootScope.$emit('editor.nodesystem.delete',{id:data.id});
         })
     };
+
+
     $scope.start = function () {
         $sailsSocket.get('/api/nodesystem/'+$scope.nodeSystem.id+'/start').success(function(){
             console.log('Running');
         })
     };
+
 
     $scope.createNode=function(nodeType){
         var id =_.max($scope.nodes,'id').id +1 || 1;
@@ -88,43 +101,35 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
                 key:'global'
             }
         };
-        if(nodeType ==='input'){
+        if(nodeType === NodeType.input){
             var eventType =_.first($scope.eventTypes);
             node.data.eventType = eventType.name;
             node.outputs =[{name:'timestamp',type:'timestamp'}];
             _.each(eventType.params,function(output){
                 $scope.node.outputs.push(output);
             })
-        }else if(nodeType ==='count'){
+        }else if(nodeType ===NodeType.count){
             node.outputs=[{name:'count',type:'number'}];
             //TODO add value channel
             node.inputs=[{name:'value',type:'number'}];
         }else if( nodeType === 'valueOutput'){
             node.inputs=[{name:'value',type:'number'}];
-        }else if(nodeType === 'min'|| nodeType ==='max'||nodeType==='average'){
+        }else if(nodeType === NodeType.min|| nodeType === NodeType.max||nodeType===NodeType.average){
             node.outputs=[{name:nodeType,type:'number'}];
             node.inputs=[{name:'value',type:'number'}];
-        }else if(nodeType ==='equals'){
+        }else if(nodeType ===NodeType.equals){
             node.inputs=[{name:'first',type:'number'},{name:'second',type:'number'}];
             node.outputs=[{name:'true',type:'number'},{name:'false',type:'number'}];
-        }else if(nodeType ==='constant'){
+        }else if(nodeType ===NodeType.constant){
             node.outputs=[{name:'constant',type:'number'}];
             node.data.constant =0;
-        }else if(nodeType ==='countNotChanging'){
+        }else if(nodeType === NodeType.valueOutput){
             node.inputs=[{name:'value',type:'number'},{name:'threshold',type:'number'}];
             node.outputs=[{name:'count',type:'number'}];
         }
         $scope.nodes.push(node);
     };
 
-    $rootScope.$on('node.position.changed',function(){
-        _.each($scope.connections,function(conn){
-            $scope.$apply(function(){
-                conn.target.pos =$scope.calculateTargetPos(conn.target.node,conn.target.input.name,conn.target.pos);
-                conn.source.pos =$scope.calculateSourcePos(conn.source.node,conn.source.output.name,conn.source.pos);
-            });
-        });
-    });
 
    $scope.calculateSourcePos= function (node,outputname,pos){
         var spaceBetweenOutputs =23;
@@ -135,7 +140,7 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
            result.y =node.y;
        }
         var index = _.findIndex(node.outputs,{name:outputname});
-        if(node.data.nodeType === 'input' || node.data.nodeType === 'constant' ){
+        if(node.data.nodeType === NodeType.input || node.data.nodeType === NodeType.constant ){
             var outputOffset =90;
             result.y += outputOffset + index * spaceBetweenOutputs;
         }else{
@@ -144,7 +149,6 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
         }
         return result;
     };
-
    $scope.calculateTargetPos= function (node,inputname,pos){
         var spaceBetweenInputs =23;
        var result={x:node.x,y:node.y};
@@ -154,7 +158,7 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
            result.y =node.y;
        }
         var index = _.findIndex(node.inputs,{name:inputname});
-        if(node.data.nodeType === 'valueOutput'){
+        if(node.data.nodeType === NodeType.valueOutput){
             var outputOffset =90;
             result.y += outputOffset + index * spaceBetweenInputs;
         }else{
@@ -164,8 +168,9 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
         return result;
     };
 
+
     (function init(){
-        $scope.connections = _.map(connections,function(connection){
+        $scope.connections = _.map($scope.nodeSystem.connections,function(connection){
             var source= _.find($scope.nodes,{id:connection.source.node_id});
             var target= _.find($scope.nodes,{id:connection.target.node_id});
             var sourcePos= $scope.calculateSourcePos(source,connection.source.output);
