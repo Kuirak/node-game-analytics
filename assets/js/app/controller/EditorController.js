@@ -110,9 +110,8 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
             })
         }else if(nodeType ===NodeType.count){
             node.outputs=[{name:'count',type:'number'}];
-            //TODO add value channel
             node.inputs=[{name:'value',type:'number'}];
-        }else if( nodeType === 'valueOutput'){
+        }else if( nodeType === NodeType.valueOutput){
             node.inputs=[{name:'value',type:'number'}];
         }else if(nodeType === NodeType.min|| nodeType === NodeType.max||nodeType===NodeType.average){
             node.outputs=[{name:nodeType,type:'number'}];
@@ -123,7 +122,7 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
         }else if(nodeType ===NodeType.constant){
             node.outputs=[{name:'constant',type:'number'}];
             node.data.constant =0;
-        }else if(nodeType === NodeType.valueOutput){
+        }else if(nodeType === NodeType.countNotChanging){
             node.inputs=[{name:'value',type:'number'},{name:'threshold',type:'number'}];
             node.outputs=[{name:'count',type:'number'}];
         }
