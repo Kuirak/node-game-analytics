@@ -54,15 +54,4 @@ app.controller('TypeController',function($scope, $sailsSocket,$http, $stateParam
     $scope.deleteParam = function (param) {
         _.remove($scope.selectedType.params,param);
     };
-
-//    (function init(){
-//        $sailsSocket.get('/api/type').success(function(data){
-//            $scope.types =data;
-//        }).catch(console.error);
-//        //TODO ask robdubya
-//        //verbose: Routing message over socket:  { method: 'get', data: {}, url: '/api/type', headers: {} }
-//        //debug: Deprecated:   `Model.subscribe(socket, null, ...)`
-//        //debug: (see http://links.sailsjs.org/docs/config/pubsub)
-//        //debug: Please use instance rooms instead (or raw sails.sockets.*() methods.)
-//    }());
 });

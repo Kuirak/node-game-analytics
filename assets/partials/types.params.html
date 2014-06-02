@@ -1,13 +1,14 @@
 <h3>{{selectedType.name}}</h3>
 <ul class="nav nav-stacked" >
     <li ng-repeat="param in selectedType.params">
-        {{param.name}} - {{param.type}}
-        <button ng-click="deleteParam(param)" class="btn btn-sm btn-danger">
+      <h4 class="inline">  {{param.name}} - {{param.type}}
+        <button ng-hide="selectedType.internal" ng-click="deleteParam(param)" class="btn btn-sm btn-danger">
             <span  class="glyphicon glyphicon-trash"></span>
         </button>
+      </h4>
     </li>
-    <hr/>
-    <li>
+    <hr ng-hide="selectedType.internal"/>
+    <li ng-hide="selectedType.internal">
 
         <input class="form-control" type="text" ng-model="newParamName"/>
         <select class="form-control"
@@ -21,6 +22,6 @@
 
     </li>
 </ul>
-<hr/>
-<a class="btn btn-lg btn-primary" ng-click="saveSelectedType()">Save</a>
+<hr ng-hide="selectedType.internal"/>
+<a ng-hide="selectedType.internal" class="btn btn-lg btn-primary" ng-click="saveSelectedType()">Save</a>
 

@@ -5,16 +5,18 @@
         </div>
     </div>
     <div class="row">
-
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <ul class="nav nav-pills nav-stacked">
-                <li ng-repeat="type in types" ui-sref-active="active">
-                   <a ui-sref="types.params({type:type.name})">
-                       <button ng-click="deleteType(type)" class="btn btn-sm btn-danger pull-right">
+                <li ng-repeat="type in types | orderBy: 'type.name' " ui-sref-active="active">
+                   <a ui-sref="types.params({type:type.name})" style="padding-right: 0;
+padding-bottom: 9px;">
+                       <button ng-click="deleteType(type)"
+                               ng-hide="type.internal"
+                               class="btn btn-sm btn-danger pull-right"
+                               style="margin: -10px 0; font-size: 15px">
                            <span  class="glyphicon glyphicon-trash"></span>
                        </button>
                        {{type.name}}
-
                    </a>
 
                 </li>
@@ -23,6 +25,7 @@
                     <input type="text" ng-model="newTypeName"/>
                     <button ng-click="createType(newTypeName)"
                             ng-disabled="!newTypeName"
+
                             class="btn btn-sm btn-success">Create</button>
                 </li>
             </ul>

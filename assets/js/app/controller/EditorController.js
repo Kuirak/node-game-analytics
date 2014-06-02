@@ -24,8 +24,8 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
         if(connection.source.node_id === connection.target.node_id){
             return;
         }
-       var source = _.find($scope.nodes,{id:connection.source.node_id});
-       var target = _.find($scope.nodes,{id:connection.target.node_id});
+        var source = _.find($scope.nodes,{id:connection.source.node_id});
+        var target = _.find($scope.nodes,{id:connection.target.node_id});
         var output = _.find(source.outputs,{name: connection.source.outputname});
         var input = _.find(target.inputs,{name:connection.target.inputname});
         var sourcePos= $scope.calculateSourcePos(source,connection.source.outputname);
