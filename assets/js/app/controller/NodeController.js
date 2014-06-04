@@ -21,7 +21,7 @@ app.controller('NodeController',function($scope,$rootScope){
         }
         if(newValue){
             var eventType = _.find($scope.eventTypes,{name:newValue});
-            $scope.node.outputs =[{name:'time',type:'timestamp'}];
+            $scope.node.outputs =[{name:'timestamp',type:'timestamp'}];
             _.each(eventType.params,function(output){
                 $scope.node.outputs.push(output);
             });
