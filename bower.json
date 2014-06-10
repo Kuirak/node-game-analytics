@@ -16,15 +16,16 @@
   ],
   "dependencies": {
     "angular": "~1.2.16",
-    "angular-bootstrap": "~0.10.0",
-    "angular-moment": "~0.6.2",
-    "angular-ui-bootstrap-bower": "~0.10.0",
     "angular-ui-router": "~0.2.10",
-    "angular-ui-utils": "~0.1.1",
     "lodash": "~2.4.1",
     "d3": "~3.4.5",
     "angular-dragdrop-ganarajpr": "~1.0.1",
     "angularSails": "https://github.com/Kuirak/angularSails.git",
-    "uuid-js": "~0.7.5"
+    "uuid-js": "~0.7.5",
+    "nvd3": "~1.1.15-beta",
+    "angularjs-nvd3-directives": "~0.0.7"
+  },
+  "resolutions": {
+    "d3": "~3.4.5"
   }
 }

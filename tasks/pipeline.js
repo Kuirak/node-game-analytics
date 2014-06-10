@@ -29,12 +29,10 @@ var jsFilesToInject = [
   'js/components/d3.js',
   'js/components/sails.io.js',
   'js/components/angular.js',
-
+  'js/components/bower_components/nvd3/nv.d3.js',
 
   // then beef it up with some convenience logic for talking to Sails.js
 
-
-  'js/components/moment.js',
   //
   'js/components/**/*.js',
   // All of the rest of your app scripts

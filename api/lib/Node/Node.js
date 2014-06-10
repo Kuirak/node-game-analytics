@@ -19,7 +19,6 @@ Demux.prototype._write =function(chunk,enc,next){
 };
 
 
-//Node Factory
 function Node(id,options){
     var self =this;
     self.id =id;
@@ -40,7 +39,7 @@ function Node(id,options){
 
 Node.prototype.attachInput =function(inputname,previousNodeOutputStream){
     var self =this;
-    if(typeof previousNodeOutputStream ===  'undefined'){
+    if(_.isNull(previousNodeOutputStream) || _.isUndefined(previousNodeOutputStream)){
         throw new Error("Stream doesn't exist " +inputname)
     }
     if(!_.some(self.inputs,{name:inputname})){
@@ -60,9 +59,13 @@ Node.prototype.setupInputs =function(){
     var constant={};
 
     function checkIfAllData() {
+        //Sind alle Daten vorhanden?
         if (_.size(data) === _.size(self.sources)) {
+            // an TransformStream senden
             self.transform.write(data);
+            // Datenpuffer zurücksetzen
             data = {};
+            //Streams fortsetzen
             _.each(self.sources, function (input) {
                 if (input instanceof stream.Readable) {
                     input.resume();
@@ -70,25 +73,28 @@ Node.prototype.setupInputs =function(){
                     data = _.clone(constant);
 
                 }
-            })
+            });
         }
     }
 
     _.forIn(self.sources,function(input,name){
+        // Falls kein Stream sondern Konstante
         if(!(input instanceof stream.Readable)){
             constant[name]={name:name,data:input};
             data = _.assign(data,constant);
             checkIfAllData();
         }else{
+        //Eventlistener wenn der Inputstream Daten hat
         input.on('data',function(chunk){
             if(!chunk.data){
                 return;
             }
             input.pause();
+            //den Inputname setzen und in den Datenpuffer speichern
             chunk.name =name;
             data[name]=chunk;
             checkIfAllData();
-        })
+        });
         }
     });
 };
