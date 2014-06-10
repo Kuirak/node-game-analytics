@@ -12,6 +12,13 @@ app.controller('NodeSystemController',function($scope,$state,nodeSystems,$sailsS
             $state.go('editor.nodesystem', {id: newValue.id})
         }
     });
+    $scope.startAll = function () {
+        _.each($scope.nodeSystems,function(nodeSystem){
+            $sailsSocket.get('/api/nodesystem/'+nodeSystem.id+'/start').success(function(){
+            });
+        });
+    };
+
     $scope.createNodeSystem = function (name) {
         $sailsSocket.post('/api/nodesystem/',{name:name,nodes:[],connections:[]}).success(function(data){
             $scope.nodeSystems.push(data);
