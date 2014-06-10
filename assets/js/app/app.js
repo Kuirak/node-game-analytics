@@ -2,7 +2,7 @@
 /**
  * Created by Drako on 07.04.2014.
  */
-var app = angular.module('RTA',['sails.io','ui.router','d3','ngDragDrop','nvd3ChartDirectives']);
+var app = angular.module('RTA',['sails.io','ui.router','d3','ngDragDrop','nvd3ChartDirectives','ui.bootstrap']);
 
 app.config(function($stateProvider,$locationProvider){
     $locationProvider.html5Mode(true);

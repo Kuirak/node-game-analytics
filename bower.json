@@ -23,7 +23,9 @@
     "angularSails": "https://github.com/Kuirak/angularSails.git",
     "uuid-js": "~0.7.5",
     "nvd3": "~1.1.15-beta",
-    "angularjs-nvd3-directives": "~0.0.7"
+    "angularjs-nvd3-directives": "~0.0.7",
+    "angular-bootstrap": "~0.11.0",
+    "angular-ui-bootstrap-bower": "~0.11.0"
   },
   "resolutions": {
     "d3": "~3.4.5"
