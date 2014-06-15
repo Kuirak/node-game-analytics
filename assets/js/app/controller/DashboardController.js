@@ -26,17 +26,18 @@ app.controller('DashboardController',function($scope,$sailsSocket){
        $sailsSocket.get('/api/type?internal=true').success(function(data){
            _.each(data,function(eventType){
                $scope.data[eventType.name]={name:eventType.name,data:0};
+               $scope.chartData.push({
+                   key:eventType.name ,
+                   values:[]
+               });
                $sailsSocket.get('/api/event?where={"type":"'+eventType.name+'"}&sort=id%20DESC').success(function(data){
                    if(data.length >0) {
                        $scope.data[data[0].type].data = data[0].params[_.first(_.keys(data[0].params))];
-                       var series ={
-                           key:eventType.name ,
-                           values:[]
-                       };
+                       var series = _.find($scope.chartData,{key:data[0].type});
                        _.eachRight(data,function(event){
                            series.values.push([_.parseInt(event.timestamp),event.params[_.first(_.keys(event.params))]])
                        });
-                       $scope.chartData.push(series);
+
                    }
                })
            })
