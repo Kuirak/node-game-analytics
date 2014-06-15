@@ -1,6 +1,7 @@
 'use strict';
 /**
  * Created by Jonas Kugelmann on 26.05.2014.
+ * Enum/Dictionary aller Nodetypen
  */
 
 module.exports={

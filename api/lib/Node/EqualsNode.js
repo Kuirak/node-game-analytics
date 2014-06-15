@@ -24,16 +24,19 @@ function EqualsTransform(){
 EqualsTransform.prototype._transform = function(chunk,enc,next){
     if(chunk){
         var value =null;
+        //stellt sicher das das AusgangsPaket eine Session_id hat
         if(chunk.first.session_id){
            value= chunk.first;
         }else{
             value =chunk.second;
         }
-
+        //vergleicht die daten
         if(chunk.first.data=== chunk.second.data){
+            //Output setzen
             value.name='true';
             this.push([value]);
         }else{
+            //Output setzen
             value.name='false';
             this.push([value]);
         }

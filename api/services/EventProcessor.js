@@ -9,14 +9,17 @@ var stream = require('stream')
     ,Input =require('../lib/Node/InputNode')
     ,Transformations =require('../lib/Transformations');
 
+//Liste der aktuell laufenden NodeSysteme
 var runningSystems =[];
+//Map für alle Inputs nach Eventtype aufgeteilt
 var inputs={};
 
 module.exports={
   eventCreated: function(event){
       //Put in to system
       //timestamp sort
-      //wait until Event.stream() is Done then start  new Event.stream() until real time
+      //TODO wait until Event.stream() is Done then start  new Event.stream() until real time
+      //schreibt ein neu erstelltes Event in alle in Inputs die es benötigen
       _.each(inputs[event.type],function(input){
           input.write(event);
       });
@@ -30,13 +33,12 @@ module.exports={
   }
 };
 
-function init(){
-    Nodesystem.find().then(function(data){
-        runningSystems= _.map(data,setupNodeSystem);
-    }).fail(sails.log.error);
-}
-
-
+/**
+ * Setzt ein NodeSystem auf
+ * Erstellt alle Nodeinstanzen und verbindet diese
+ * @param system Die Datenstruktur des NodeSystems
+ * @returns NodeStreamSystem
+ */
 function setupNodeSystem(system){
     sails.log.verbose("Setting up System: "+system.name);
     var nodeSystem ={name:system.name,input:{},dbSource:system};
@@ -44,7 +46,8 @@ function setupNodeSystem(system){
             return Node.create(node);
     });
     nodeSystem.nodes =nodes;
-    //filter Input and sort for eventType;
+   //speichert alle Inputnodes in der Inputmap,
+   //damit später neue events eingfügt werden
     _.chain(nodes)
         .select(function(node){return node instanceof Input;})
         .each(function(node){
@@ -58,7 +61,9 @@ function setupNodeSystem(system){
             nodeSystem.input[node.eventType].push(node);
             //TODO maybe add system/event stream
         });
+
     sails.log.verbose("Setting up Nodes: "+system.name);
+   //Falls ein Node initialisiert werden muss  wird dies aufgerufen und der Promise in das Array gespeichert
    var promises= _.chain(nodes).select(function(node){
         return node.init ? true:false;
    }).map(function(node){ //init returns promise
@@ -66,10 +71,11 @@ function setupNodeSystem(system){
    }).value();
 
     sails.log.verbose("Started Init for Nodes: "+system.name);
-    //wait for all inits to be done
+    //Wenn alle initialisiert wurden
     Q.all(promises).then(function(){
         sails.log.verbose("Finished Init Nodes: "+system.name);
         sails.log.verbose("Attaching Connections: "+system.name);
+        //Verbinde die Nodes miteinander
         _.each(system.connections,function(conn){
             var source = _.find(nodes,{id:conn.source.node_id});
             var target = _.find(nodes,{id:conn.target.node_id});
@@ -77,6 +83,7 @@ function setupNodeSystem(system){
             target.attachInput(conn.target.input, output);
         });
 
+        //und setze die Data listener auf
         _.each(nodes,function(node){
             if(!node.setupInputs)return;
             node.setupInputs();
@@ -85,11 +92,13 @@ function setupNodeSystem(system){
         sails.log.verbose("Attached Connections: "+system.name);
         sails.log.verbose("Starting Event Streams: "+system.name);
 
+        //Schreibe alle vorhandenen Events in das  System
         _.forIn(nodeSystem.input,function(value,key){
             _.each(value,function(input){
                var eventStream= Event.stream({type:key},Transformations.none);
                 eventStream.on('end',function(data){
-                    //Start new stream with rest of data
+                    //TODO Start new stream with rest of data
+                    //Hier soll später dann freigeschalten werden auf den Echtzeitmodus
                     sails.log.verbose("Ended Event Stream: "+key);
                 });
                 eventStream.pipe(input,{end:false});

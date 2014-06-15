@@ -2,7 +2,7 @@
 /**
  * User.js
  *
- * @description :: TODO: You might write a short summary of how this model works and what it represents here.
+ * @description :: Datenmodell für den User - wrid im Moment nicht verwendet
  * @docs		:: http://sailsjs.org/#!documentation/models
  */
 

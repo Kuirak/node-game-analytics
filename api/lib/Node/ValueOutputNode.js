@@ -8,6 +8,12 @@ var Node = require('./Node')
     ,util = require('util');
 
 util.inherits(OutputNode,Node);
+/**
+ *  Der Outputnode schreibt die Inputs als Event in die Datenbank
+ * @param id Id des Nodes im NodeSystem
+ * @param outputType Name des output events
+ * @constructor
+ */
 function OutputNode(id,outputType){
     Node.call(this,id,{
         inputs:[{name:'value',type:'number'}],
@@ -16,7 +22,10 @@ function OutputNode(id,outputType){
     this.outputType =outputType;
     //create event type
 }
-
+/**
+ * Muss vor start des NodeSystems ausgeführt werden
+ * @returns promise
+ */
 OutputNode.prototype.init =function(){
 var deferred = Q.defer();
 var type ={
@@ -51,6 +60,9 @@ OutputStream.prototype._write =function(chunk,enc,next){
     event.type =this.outputType;
     delete event.name;
     delete event.data;
+    //findOrCreate - wird umgewandelt wenn man reprocessing implementiert
+    //updated im Moment falls ein Event zu diesem Zeitpunkt schon vorhanden ist
+    //Ansonten wird ein neues erstellt und an die verbundenen Clients veröffentlicht
     Event.findOne({type:event.type,session_id:event.session_id,timestamp:event.timestamp}).then(function(data){
         if(data){
             data.params =event.params;

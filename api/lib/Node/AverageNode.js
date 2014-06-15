@@ -27,9 +27,11 @@ AverageTransform.prototype._transform = function(chunk,enc,next){
         var value =chunk.value;
         var average= this.average;
         average+=value.data;
+        //Berechnung des neuen Durchschnitts
         average =average /2;
         if(average !== this.average){
             this.average =average;
+            //Output setzen
             value.name ='average';
             value.data =this.average;
             this.push([value])

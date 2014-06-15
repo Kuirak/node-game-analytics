@@ -18,16 +18,16 @@ util.inherits(CountTransform,stream.Transform);
 function CountTransform(){
 
     stream.Transform.call(this,{objectMode:true});
-    this.count =0; //get count form Cache
+    this.count =0;
 }
 
 CountTransform.prototype._transform = function(chunk,enc,next){
     if(chunk){
         var value =chunk.value;
         this.count +=1;
+        //Output setzen
         value.name ='count';
         value.data =this.count;
-        //write to cache
         this.push([value]);
     }
 

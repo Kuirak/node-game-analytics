@@ -17,7 +17,7 @@ function CountNotChangingNode(id){
 util.inherits(CountNotChangingTransform,stream.Transform);
 function CountNotChangingTransform(){
     stream.Transform.call(this,{objectMode:true});
-    this.count =0; //get count form Cache
+    this.count =1; //get count form Cache
     this.previous=0;
     this.first =true;
 }
@@ -25,21 +25,24 @@ function CountNotChangingTransform(){
 CountNotChangingTransform.prototype._transform = function(chunk,enc,next){
     if(chunk){
         chunk.value.data = parseInt(chunk.value.data);
+        //beim ersten Paket wird muss der previous wert gesetzt werden
         if(this.first){
-            this.count +=1;
             this.previous =chunk.value.data;
             this.first =false;
             next();
             return;
         }
         var value =chunk.value;
-        if(this.previous <= value.data+chunk.threshold.data && this.previous >= value.data-chunk.threshold.data){
+        //Überprüft ob der neue wert im Bereich previous  bis previous + threshold liegt
+        if(this.previous <= value.data && this.previous+chunk.threshold.data >= value.data){
             this.count +=1;
             next();
         }else{
             this.previous =value.data;
+            //Output setzen
             value.name ='count';
             value.data =this.count;
+            //Count zurücksetzen
             this.count=1;
             this.push([value]);
             next();

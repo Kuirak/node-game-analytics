@@ -7,6 +7,7 @@
  */
 
 module.exports = {
+    // Controller action um ein Node System zu starten
 	startNodeSystem: function(req,res){
         var id = req.param('id');
         Nodesystem.findOne(id).then(function(data){

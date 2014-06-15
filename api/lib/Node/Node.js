@@ -1,11 +1,17 @@
 'use strict';
 /**
  * Created by Jonas Kugelmann on 26.05.2014.
+ *
  */
 var stream = require('stream')
     ,util = require('util');
 
 util.inherits(Demux,stream.Writable);
+/**
+ * Demultiplexer - wird in der Nodeklasse verwendet und teilt das Ergebnis des TransformStreams wieder auf.
+ * @param outputs Das outputs array von der Nodeklasse
+ * @constructor
+ */
 function Demux(outputs){
     stream.Writable.call(this,{objectMode:true});
     this.outputs=outputs;
@@ -18,7 +24,12 @@ Demux.prototype._write =function(chunk,enc,next){
     next();
 };
 
-
+/**
+ *  Abstrakte Basisklasse für Nodes
+ * @param id Die id des Nodes im System
+ * @param options Optionsobjekt - beinhaltet input und output definitionen und eine Instanz des verwendeten Transformstreams.
+ * @constructor
+ */
 function Node(id,options){
     var self =this;
     self.id =id;
@@ -36,7 +47,11 @@ function Node(id,options){
         });
     }
 }
-
+/**
+ * fügt einen Stream in das Sourcesdictionary ein
+ * @param inputname Name des Inputs
+ * @param previousNodeOutputStream der Readable stream des vorhergehenden Nodes
+ */
 Node.prototype.attachInput =function(inputname,previousNodeOutputStream){
     var self =this;
     if(_.isNull(previousNodeOutputStream) || _.isUndefined(previousNodeOutputStream)){
@@ -51,7 +66,7 @@ Node.prototype.attachInput =function(inputname,previousNodeOutputStream){
 
 
 /**
- *
+ * wird aufgerufen wenn alle inputs angehängt wurden
  */
 Node.prototype.setupInputs =function(){
     var data={};

@@ -1,6 +1,7 @@
 'use strict';
 /**
  * Created by Jonas Kugelmann on 26.05.2014.
+ * Node factory
  */
 var NodeType =require('./NodeType')
     ,CountNode =require('./CountNode')
@@ -12,6 +13,7 @@ var NodeType =require('./NodeType')
     ,ConstantNode =require('./ConstantNode')
     ,CountNotChangingNode =require('./CountNotChangingNode')
     ,EqualsNode =require('./EqualsNode');
+
 
 function create(node){
     if(node.data.nodeType === NodeType.count){

@@ -2,7 +2,7 @@
 /**
 * Event.js
 *
-* @description :: TODO: You might write a short summary of how this model works and what it represents here.
+* @description :: Das DatenModel für das Event
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 
@@ -16,7 +16,10 @@ module.exports = {
    //TODO source_id:{type:'integer'},
     timestamp:{type:'string'},
     game:{model:'game'}
-  },beforeCreate:function(values,done){
+  },
+    //Hier wird überprüft ob das Event alle richtigen Parameter hat
+    //Für Optimierungszwecke sollte dies Verschoben werden in eine Policy und einen Service
+    beforeCreate:function(values,done){
         //TODO move to policy
         Type.findOne({name:values.type}).then(function(type){
             if(!type.params){
@@ -34,7 +37,9 @@ module.exports = {
                 done();
             }
         })
-    },afterCreate:function(event,done){
+    },
+    //nach erfolgreicher Erstellung wird der Eventprocessor benachrichtigt
+    afterCreate:function(event,done){
         EventProcessor.eventCreated(event);
         done();
     }

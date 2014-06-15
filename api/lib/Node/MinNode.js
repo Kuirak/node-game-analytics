@@ -21,13 +21,14 @@ function MinTransform(){
     stream.Transform.call(this,{objectMode:true});
     this.min = Number.MAX_VALUE;
 }
+//funktioniert umgekehrt wie der MaxNode/transform
 MinTransform.prototype._transform = function(chunk,enc,next){
     if(chunk) {
         var value = chunk.value;
         if (value.data < this.min) {
             this.min = value.data;
             value.name ='min';
-            //write to cache
+
             this.push([value]);
         }
     }

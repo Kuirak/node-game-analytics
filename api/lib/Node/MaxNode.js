@@ -18,17 +18,21 @@ function MaxNode(id){
 util.inherits(MaxTransform,stream.Transform);
 function MaxTransform(){
     stream.Transform.call(this,{objectMode:true});
-    this.max =0; //get count form Cache
+    this.max =0;
 
 }
 
 MaxTransform.prototype._transform = function(chunk,enc,next){
     if(chunk){
         var value = chunk.value;
+        //überprüft ob der neue wert größer als das alte max ist
+        //schreibt nur ein neues Paket wenn die der Fall
+        //hier könnte man einen Reset implementieren um einen verlauf
+        //der Werte in gewissen zeitfenstern zu bekommen
+
         if (value.data > this.max){
             this.max = value.data;
             value.name ='max';
-            //write to cache
             this.push([value]);
         }
     }
