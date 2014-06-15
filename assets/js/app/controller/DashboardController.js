@@ -8,6 +8,12 @@ app.controller('DashboardController',function($scope,$sailsSocket){
 
     $scope.chartData=[];
 
+    $scope.xAxisTickFormatFunction = function(){
+        return function(d){
+            return d3.time.format('%H:%M')(moment(d).toDate());
+        }
+    };
+
     (function () {
         //Event listener wenn neue Events erstellt werden
         //schiebt die Events in die dazugehörigen Arrays
@@ -16,7 +22,7 @@ app.controller('DashboardController',function($scope,$sailsSocket){
                 var event = message.data;
                 if(_.contains(_.keys($scope.data),event.type)){
                     $scope.data[event.type].data = event.params[_.first(_.keys(event.params))];
-                    _.find($scope.chartData,{key:event.type}).values.push([_.parseInt(event.timestamp),event.params[_.first(_.keys(event.params))]]);
+                    _.find($scope.chartData,{key:event.type}).values.push([event.timestamp,event.params[_.first(_.keys(event.params))]]);
                 }
             }
         });
@@ -35,7 +41,7 @@ app.controller('DashboardController',function($scope,$sailsSocket){
                        $scope.data[data[0].type].data = data[0].params[_.first(_.keys(data[0].params))];
                        var series = _.find($scope.chartData,{key:data[0].type});
                        _.eachRight(data,function(event){
-                           series.values.push([_.parseInt(event.timestamp),event.params[_.first(_.keys(event.params))]])
+                           series.values.push([event.timestamp,event.params[_.first(_.keys(event.params))]])
                        });
 
                    }

@@ -21,10 +21,11 @@
     "d3": "~3.4.5",
     "angular-dragdrop-ganarajpr": "~1.0.1",
     "angularSails": "https://github.com/Kuirak/angularSails.git",
-    "uuid-js": "~0.7.5",    
+    "uuid-js": "~0.7.5",
     "angularjs-nvd3-directives": "~0.0.7",
     "angular-bootstrap": "~0.11.0",
-    "angular-ui-bootstrap-bower": "~0.11.0"
+    "angular-ui-bootstrap-bower": "~0.11.0",
+    "moment": "~2.7.0"
   },
   "resolutions": {
     "d3": "~3.4.5"
