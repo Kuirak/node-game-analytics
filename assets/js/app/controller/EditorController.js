@@ -1,6 +1,8 @@
 'use strict';
 /**
  * Created by Jonas Kugelmann on 11.04.2014.
+ * EditorController steuert den Editor, kümmert sich um das Verknüpfen und trennen von Nodes
+ * und übernimmt  auch die ein oder andere Brückenimplmentierung für die Verbindungsdarstellung
  */
 app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventTypes,$state,$rootScope,NodeType){
     $scope.nodeSystem =nodeSystem.data;
@@ -12,22 +14,29 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
     $scope.nodes=$scope.nodeSystem.nodes;
     $scope.eventTypes =eventTypes.data;
 
+    //Eventlistener wenn ein Node gelöscht wird
     $rootScope.$on('node.removed',function(event,args){
+        //Node löschen
         _.remove($scope.nodes,{id:args.id});
+        // Alle Verbindungen löschen
         _.remove($scope.connections,function(conn){
             return conn.source.node.id === args.id || conn.target.node.id ===args.id;
         })
     });
 
 
+    //Eventlistener wenn ein Node verbunden wird
     $rootScope.$on('node.connected',function(event,connection){
+        //Keine Verbindung mit sich selbst
         if(connection.source.node_id === connection.target.node_id){
             return;
         }
+
         var source = _.find($scope.nodes,{id:connection.source.node_id});
         var target = _.find($scope.nodes,{id:connection.target.node_id});
         var output = _.find(source.outputs,{name: connection.source.outputname});
         var input = _.find(target.inputs,{name:connection.target.inputname});
+        //Berechnet Position der Aus und Eingänge - Übergangslösung
         var sourcePos= $scope.calculateSourcePos(source,connection.source.outputname);
         var targetPos= $scope.calculateTargetPos(target,connection.target.inputname);
         var conn= {
@@ -45,7 +54,7 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
        $scope.connections.push(conn);
     });
 
-
+    // Updated die Position für die Verbindungen - Übergangslösung
     $rootScope.$on('node.position.changed',function(){
         _.each($scope.connections,function(conn){
             $scope.$apply(function(){
@@ -55,12 +64,14 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
         });
     });
 
-
+    //löst eine Verbindung auf
     $scope.unconnect =function(connection){
         _.remove($scope.connections,connection);
     };
 
+    //Speichert das NodeSystem auf den Server
     $scope.save = function(){
+        //vorher muss das connections array in ein serialisierbares Format gebracht werden
         $scope.nodeSystem.connections= _.map($scope.connections,function(conn){
             var output = conn.source.output.name;
             var input= conn.target.input.name;
@@ -74,7 +85,7 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
         })
     };
 
-
+    //Entfernt das NodeSystem
     $scope.remove = function () {
         $sailsSocket.delete('/api/nodesystem/'+$scope.nodeSystem.id).success(function(data){
             $state.go('editor');
@@ -83,14 +94,16 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
     };
 
 
+    //Start das ausgewählte Node System
     $scope.start = function () {
         $sailsSocket.get('/api/nodesystem/'+$scope.nodeSystem.id+'/start').success(function(){
             console.log('Running');
         })
     };
 
-
+    //Erstellt einen neuen Node
     $scope.createNode=function(nodeType){
+        //Erstellt neue ID über dem aktuell höchsten ID wert
         var id =_.max($scope.nodes,'id').id +1 || 1;
         var node = {
             x:0,
@@ -101,6 +114,7 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
                 key:'global'
             }
         };
+        //Verschiedene Optionen für verschieden Nodetypen
         if(nodeType === NodeType.input){
             var eventType =_.first($scope.eventTypes);
             node.data.eventType = eventType.name;
@@ -129,7 +143,7 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
         $scope.nodes.push(node);
     };
 
-
+    //Berechnet die Position der Ausgänge - Übergangslösung
    $scope.calculateSourcePos= function (node,outputname,pos){
         var spaceBetweenOutputs =23;
        var result={x:node.x +180,y:node.y};
@@ -148,6 +162,9 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
         }
         return result;
     };
+
+
+   //Berechnet die Position der Eingänge - Übergangslösung
    $scope.calculateTargetPos= function (node,inputname,pos){
         var spaceBetweenInputs =23;
        var result={x:node.x,y:node.y};
@@ -168,6 +185,7 @@ app.controller("EditorController",function($scope,$sailsSocket,nodeSystem,eventT
     };
 
 
+    //Wandelt die serialisierten Verbindungen in ein Referenzbasiertes Datenformat um
     (function init(){
         $scope.connections = _.map($scope.nodeSystem.connections,function(connection){
             var source= _.find($scope.nodes,{id:connection.source.node_id});

@@ -2,6 +2,7 @@
 /**
  * Created by Jonas Kugelmann on 26.05.2014.
  * Sourcecode from https://github.com/jdpedrie/angularjs-camelCase-to-human-filter
+ * Wandelt "CamelCase" in "Title Case" um
  */
 app.filter('titlecase', function () {
     return function(input) {

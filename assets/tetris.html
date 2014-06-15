@@ -132,7 +132,7 @@
     }
 
     function bakecake(i) {
-        //TODO round start
+        //Sendet RoundStart Event
         Analytics.createEvent('RoundStart');
         cake[i].wipefield();
         cake[i].tetris.setTetris();
@@ -143,7 +143,7 @@
     }
 
     function newcake(i) {
-        //TODO session start
+        //Sendet SessionStart Event
         Analytics.createEvent('SessionStart');
         cake[i] = new FIELD();
         cake[i].makefield(10, 20);
@@ -166,7 +166,7 @@
     function restartcake(i) {
         var score =cake[i].tetris.rows_completed;
         if (V4() == '') V4('Previous Scores: ' + score); else V4(V4() + ' ' + score);
-        //TODO round end
+        //Sendet RoundEnd Event
         Analytics.createEvent('RoundEnd',{score: score});
         bakecake(i);
     }
@@ -209,7 +209,9 @@
         window.addEventListener('load', EverythingStartsHere, false);
 
     window.onbeforeunload = function(){
+        //Sendet RoundEnd Event, da Session beendet auch automatisch Rundenende
         Analytics.createEvent('RoundEnd',{score:cake[0].tetris.rows_completed});
+        //Sendet SessionEnd Event
         Analytics.createEvent('SessionEnd');
     };
     //TODO session end on unload

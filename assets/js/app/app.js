@@ -1,9 +1,11 @@
 'use strict';
 /**
  * Created by Drako on 07.04.2014.
+ * Startpunkt der Angular Webapp
  */
 var app = angular.module('RTA',['sails.io','ui.router','d3','ngDragDrop','nvd3ChartDirectives','ui.bootstrap']);
 
+//Definitionen der verschiedene Ui States und Auflösung evtl fehlender Daten
 app.config(function($stateProvider,$locationProvider){
     $locationProvider.html5Mode(true);
     $stateProvider.state("home",{

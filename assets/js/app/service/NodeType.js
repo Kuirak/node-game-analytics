@@ -1,6 +1,7 @@
 'use strict';
 /**
  * Created by Jonas Kugelmann on 01.06.2014.
+ * Enum/Dictionary aller Nodetypen
  */
 app.constant('NodeType',{
     input:'input',

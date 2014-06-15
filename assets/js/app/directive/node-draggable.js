@@ -2,6 +2,7 @@
 /**
  * Created by Jonas Kugelmann on 11.04.2014.
  * BasedOn: http://stackoverflow.com/questions/20393855/angularjs-draggable-directive
+ * Macht ein HTML element verschiebbar
  */
 app.directive('nodeDraggable',['$document','$rootScope',function($document,$rootScope){
     return {link:function(scope,element,attr){
